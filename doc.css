@@ -1,0 +1,112 @@
+/* Shared styling for the secondary document pages (privacy, support).
+   Same tokens as index.html, set for long-form reading. */
+
+:root{
+  --porcelain:#E9EBE8;
+  --panel:#F6F7F5;
+  --ink:#14181B;
+  --ink-deep:#0D1013;
+  /* Deliberately darker than index.html's --graphite (#4E565B): these pages
+     are long-form prose, and the lighter body grey that suits short marketing
+     paragraphs gets tiring over a full privacy policy. The only token that
+     differs between the two files — keep the rest in sync by hand. */
+  --graphite:#3F464B;
+  --muted:#7A8288;
+  --line:rgba(20,24,27,0.12);
+  --line-soft:rgba(20,24,27,0.08);
+  --flame:#1652C8;
+  --flame-deep:#103F9C;
+  --on-dark:#EDEFEC;
+  --on-dark-dim:#767E83;
+
+  --display:'Archivo', system-ui, sans-serif;
+  --body:'Instrument Sans', system-ui, sans-serif;
+  --mono:'Martian Mono', ui-monospace, monospace;
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0; background:var(--porcelain); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.68;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{ background:var(--flame); color:#fff; }
+:focus-visible{ outline:2px solid var(--flame); outline-offset:3px; border-radius:4px; }
+
+.shell{ max-width:1180px; margin:0 auto; padding:0 24px; }
+
+/* nav */
+.nav{
+  background:rgba(233,235,232,0.9);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-soft);
+  position:sticky; top:0; z-index:60;
+}
+.nav__row{ display:flex; align-items:center; justify-content:space-between; gap:20px; padding:13px 0; }
+.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; color:inherit; }
+.brand__name{ font-family:var(--display); font-weight:700; font-stretch:108%; font-size:18.5px; letter-spacing:-0.015em; }
+.nav__back{ text-decoration:none; color:var(--graphite); font-size:14.5px; font-weight:500; }
+.nav__back:hover{ color:var(--ink); }
+
+/* document body */
+.doc{ max-width:720px; margin:0 auto; padding:56px 24px 88px; }
+.stencil{
+  font-family:var(--mono); font-weight:500; font-size:11px;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--flame);
+}
+.doc h1{
+  font-family:var(--display); font-weight:700; font-stretch:112%;
+  font-size:clamp(31px,4.6vw,44px); line-height:1.06; letter-spacing:-0.022em;
+  margin:14px 0 0;
+}
+.doc h2{
+  font-family:var(--display); font-weight:700; font-stretch:108%;
+  font-size:22px; line-height:1.2; letter-spacing:-0.014em;
+  margin:46px 0 0; padding-top:22px; border-top:1px solid var(--line);
+}
+.doc h3{
+  font-family:var(--display); font-weight:600; font-stretch:104%;
+  font-size:17px; letter-spacing:-0.008em; margin:28px 0 0;
+}
+.doc p{ margin:14px 0 0; color:var(--graphite); }
+.doc ul, .doc ol{ margin:14px 0 0; padding-left:22px; color:var(--graphite); }
+.doc li{ margin:8px 0; }
+.doc a{ color:var(--flame); font-weight:500; text-decoration:none; border-bottom:1px solid rgba(22,82,200,0.32); }
+.doc a:hover{ border-bottom-color:var(--flame); }
+.doc strong{ color:var(--ink); font-weight:600; }
+
+.updated{
+  font-family:var(--mono); font-size:11px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--muted); margin-top:16px;
+}
+
+.callout{
+  background:var(--panel); border:1px solid var(--line);
+  border-left:2px solid var(--flame);
+  border-radius:0 12px 12px 0; padding:18px 22px; margin:26px 0 0;
+}
+.callout p:first-child{ margin-top:0; }
+
+.faq{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:14px; padding:22px 24px; margin-top:18px;
+}
+.faq h3{ margin-top:0; }
+
+/* footer */
+.foot{ background:var(--ink-deep); color:var(--on-dark-dim); }
+.foot__inner{
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:14px;
+  padding:30px 0; font-size:13.5px;
+}
+.foot a{ color:#B9C0C3; text-decoration:none; }
+.foot a:hover{ color:var(--on-dark); }
+.foot__links{ display:flex; gap:22px; flex-wrap:wrap; }
+
+@media (max-width:640px){
+  body{ font-size:16px; }
+  .doc{ padding-top:40px; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}

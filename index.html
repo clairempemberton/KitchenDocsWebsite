@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Kitchen Docs — every equipment manual in your kitchen, answered</title>
+<meta name="description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Photograph a data plate to add equipment. Built by the team behind Smart EV Guides.">
+<link rel="canonical" href="https://smartkitchendocs.com/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#E9EBE8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Smart Kitchen Docs">
+<meta property="og:title" content="Smart Kitchen Docs — every equipment manual in your kitchen, answered">
+<meta property="og:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from.">
+<meta property="og:url" content="https://smartkitchendocs.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Smart Kitchen Docs — every equipment manual in your kitchen, answered">
+<meta name="twitter:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@104..118,600..800&family=Instrument+Sans:wght@400;500;600&family=Martian+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Smart Kitchen Docs — landing page
+   Motif: the equipment data plate. Palette is cool porcelain
+   enamel + graphite, with gas-flame blue as the only accent and
+   sodium amber reserved for the safety / maintenance thread.
+   ============================================================ */
+
+:root{
+  --porcelain:#E9EBE8;
+  --porcelain-deep:#DFE3DF;
+  --panel:#F6F7F5;
+  --ink:#14181B;
+  --ink-deep:#0D1013;
+  --graphite:#4E565B;
+  --muted:#7A8288;
+  --line:rgba(20,24,27,0.12);
+  --line-soft:rgba(20,24,27,0.08);
+  --flame:#1652C8;
+  --flame-deep:#103F9C;
+  --flame-hot:#7FB6FF;
+  --sodium:#B67512;
+  --sodium-hot:#E8A93C;
+  --on-dark:#EDEFEC;
+  --on-dark-mid:#A8B0B4;
+  --on-dark-dim:#767E83;
+
+  --shell:1180px;
+  --pad:24px;
+
+  --display:'Archivo', system-ui, sans-serif;
+  --body:'Instrument Sans', system-ui, sans-serif;
+  --mono:'Martian Mono', ui-monospace, monospace;
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--porcelain);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+::selection{ background:var(--flame); color:#fff; }
+
+:focus-visible{
+  outline:2px solid var(--flame);
+  outline-offset:3px;
+  border-radius:4px;
+}
+.on-dark :focus-visible{ outline-color:var(--flame-hot); }
+
+.shell{ max-width:var(--shell); margin:0 auto; padding-left:var(--pad); padding-right:var(--pad); }
+section[id]{ scroll-margin-top:76px; }
+
+/* ---------- type roles ---------- */
+.display{
+  font-family:var(--display);
+  font-weight:700;
+  font-stretch:112%;
+  letter-spacing:-0.022em;
+  line-height:1.04;
+  margin:0;
+}
+h1.display{ font-size:clamp(37px,4.6vw,56px); }
+h2.display{ font-size:clamp(29px,3.9vw,45px); }
+h3.display{
+  font-size:21px;
+  font-stretch:106%;
+  letter-spacing:-0.012em;
+  line-height:1.2;
+  margin:0;
+}
+
+/* Stencil label — the small uppercase field name stamped on a plate.
+   Used for eyebrows, plate fields and stat captions so the motif is
+   carried by the structure, not by decoration. */
+.stencil{
+  font-family:var(--mono);
+  font-weight:500;
+  font-size:11px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  line-height:1.4;
+}
+.stencil--lead{ font-size:12px; color:var(--flame); }
+
+.lede{ font-size:18.5px; line-height:1.55; color:var(--graphite); }
+.copy{ font-size:15.5px; line-height:1.6; color:var(--graphite); }
+strong{ color:var(--ink); font-weight:600; }
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--body); font-weight:600; font-size:15px;
+  text-decoration:none; padding:14px 22px; border-radius:10px;
+  border:1px solid transparent;
+  transition:background .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
+}
+.btn:active{ transform:translateY(1px); }
+.btn--primary{ background:var(--flame); color:#fff; }
+.btn--primary:hover{ background:var(--flame-deep); }
+.btn--ghost{ background:var(--panel); color:var(--ink); border-color:var(--line); }
+.btn--ghost:hover{ border-color:rgba(20,24,27,0.32); }
+.btn--onDark{ background:var(--flame-hot); color:#0B1220; }
+.btn--onDark:hover{ background:#A6CCFF; }
+.btn--nav{ padding:9px 17px; font-size:14px; border-radius:999px; background:var(--ink); color:var(--porcelain); white-space:nowrap; }
+.btn--nav:hover{ background:var(--flame); }
+.btn--nav .short{ display:none; }
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky; top:0; z-index:60;
+  background:rgba(233,235,232,0.86);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-soft);
+}
+.nav__row{ display:flex; align-items:center; justify-content:space-between; gap:24px; padding-top:13px; padding-bottom:13px; }
+.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; color:inherit; }
+.brand__name{ font-family:var(--display); font-weight:700; font-stretch:108%; font-size:18.5px; letter-spacing:-0.015em; }
+.nav__links{ display:flex; align-items:center; gap:26px; }
+.nav__links a:not(.btn){
+  text-decoration:none; color:var(--graphite);
+  font-size:14.5px; font-weight:500;
+}
+.nav__links a:not(.btn):hover{ color:var(--ink); }
+
+/* ---------- hero ---------- */
+.hero__grid{
+  display:grid; grid-template-columns:1.02fr 0.98fr; gap:56px;
+  align-items:center; padding-top:66px; padding-bottom:44px;
+}
+.badge{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family:var(--mono); font-weight:500; font-size:11.5px;
+  letter-spacing:0.13em; text-transform:uppercase;
+  color:var(--flame-deep);
+  background:rgba(22,82,200,0.07);
+  border:1px solid rgba(22,82,200,0.22);
+  padding:7px 14px; border-radius:999px;
+}
+.pilot{ width:7px; height:7px; border-radius:50%; background:#2E7D50; box-shadow:0 0 0 4px rgba(46,125,80,0.16); flex:0 0 auto; }
+.hero h1{ margin-top:22px; }
+.hero .lede{ max-width:520px; margin:22px 0 0; }
+.hero__cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.hero__note{
+  display:flex; align-items:center; gap:10px; margin-top:26px;
+  font-family:var(--mono); font-size:11px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--muted);
+}
+.hero__note .rule{ width:26px; height:1px; background:var(--line); flex:0 0 auto; }
+
+/* ---------- the signature: data plate in a viewfinder ---------- */
+.rig{ position:relative; display:flex; flex-direction:column; align-items:center; }
+
+.finder{
+  position:relative; width:100%; max-width:400px;
+  padding:26px; border-radius:16px;
+}
+/* camera viewfinder corner brackets */
+.finder__corner{ position:absolute; width:26px; height:26px; border:2px solid var(--flame); }
+.finder__corner--tl{ top:0; left:0; border-right:0; border-bottom:0; border-radius:6px 0 0 0; }
+.finder__corner--tr{ top:0; right:0; border-left:0; border-bottom:0; border-radius:0 6px 0 0; }
+.finder__corner--bl{ bottom:0; left:0; border-right:0; border-top:0; border-radius:0 0 0 6px; }
+.finder__corner--br{ bottom:0; right:0; border-left:0; border-top:0; border-radius:0 0 6px 0; }
+/* The scan box is inset to exactly the plate's bounds — .finder's height is
+   26px + plate + 26px — so translateY(100%) travels precisely one plate
+   height. Percentage translate is relative to the element's own box, which
+   means the animation tracks the plate through font loads and reflows with
+   no JS to keep it in sync. The line itself rides on ::before. */
+.finder__scan{
+  position:absolute; inset:26px; pointer-events:none;
+  animation:scan 4.2s cubic-bezier(.45,0,.55,1) infinite;
+}
+.finder__scan::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--flame),transparent);
+  border-radius:2px;
+}
+@keyframes scan{
+  0%,8%   { transform:translateY(0); opacity:0; }
+  14%     { opacity:.75; }
+  86%     { opacity:.75; }
+  92%,100%{ transform:translateY(100%); opacity:0; }
+}
+
+/* brushed stainless nameplate */
+.plate{
+  position:relative;
+  margin:0;                 /* <figure> ships with 40px side margins */
+  border-radius:9px;
+  padding:16px 18px 14px;
+  color:#2E353A;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0 1px, rgba(0,0,0,.028) 1px 3px),
+    linear-gradient(158deg,#F2F4F3 0%,#CFD5D6 38%,#E4E8E8 55%,#B9C1C3 100%);
+  border:1px solid #9AA3A6;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    inset 0 -1px 0 rgba(0,0,0,.14),
+    0 14px 30px rgba(20,24,27,.16);
+}
+.plate__head{
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  padding-bottom:10px; margin-bottom:11px;
+  border-bottom:1px solid rgba(0,0,0,.16);
+  box-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+.plate__mfg{
+  font-family:var(--display); font-weight:800; font-stretch:118%;
+  font-size:19px; letter-spacing:0.02em; text-transform:uppercase;
+  color:#232A2E; text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+.plate__mark{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.12em; color:#5C6569; text-transform:uppercase; }
+.plate__rows{ display:grid; grid-template-columns:auto 1fr; gap:6px 16px; }
+.plate__k{
+  font-family:var(--mono); font-size:9.5px; font-weight:500; letter-spacing:0.14em;
+  text-transform:uppercase; color:#6A7377; align-self:center;
+  text-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+.plate__v{
+  font-family:var(--mono); font-size:12px; font-weight:600; letter-spacing:0.02em;
+  color:#232A2E; text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+.rivet{
+  position:absolute; width:7px; height:7px; border-radius:50%;
+  background:radial-gradient(circle at 32% 30%, #FBFCFC, #97A0A3 62%, #6E777A);
+  box-shadow:0 1px 1px rgba(0,0,0,.3);
+}
+.rivet--tl{ top:7px; left:7px; } .rivet--tr{ top:7px; right:7px; }
+.rivet--bl{ bottom:7px; left:7px; } .rivet--br{ bottom:7px; right:7px; }
+
+/* the answer the plate produces */
+.rig__link{
+  width:2px; height:26px; margin:2px 0;
+  background:linear-gradient(180deg,var(--flame),rgba(22,82,200,0));
+}
+.answer{
+  width:100%; max-width:400px;
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:14px; padding:18px 20px 16px;
+  box-shadow:0 12px 30px rgba(20,24,27,.09);
+}
+.answer__q{
+  font-family:var(--display); font-weight:600; font-stretch:104%;
+  font-size:15.5px; letter-spacing:-0.008em; color:var(--ink); margin:0;
+}
+.answer__a{ font-size:14.5px; line-height:1.55; color:var(--graphite); margin:9px 0 0; }
+.cite{
+  display:inline-flex; align-items:center; gap:7px; margin-top:13px;
+  font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--flame-deep); background:rgba(22,82,200,0.07);
+  border:1px solid rgba(22,82,200,0.2); padding:5px 10px; border-radius:6px;
+}
+
+/* ---------- spec strip (stats, as plate fields) ---------- */
+.spec{ padding-bottom:16px; }
+.spec__grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+  background:var(--line); border:1px solid var(--line);
+  border-radius:14px; overflow:hidden;
+}
+/* Cells stretch to the tallest label, so the numbers stay on one baseline
+   even when a caption wraps. */
+.spec__cell{ background:var(--porcelain); padding:22px 20px; display:flex; flex-direction:column; }
+.spec__k{ font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); }
+.spec__v{
+  font-family:var(--display); font-weight:700; font-stretch:114%;
+  font-size:34px; line-height:1; letter-spacing:-0.02em; margin-top:auto; padding-top:9px;
+}
+.spec__foot{
+  margin:14px 2px 0; font-family:var(--mono); font-size:10.5px;
+  letter-spacing:0.06em; color:var(--muted); line-height:1.6;
+}
+
+/* ---------- band helpers ---------- */
+.band{ padding-top:78px; padding-bottom:78px; }
+.band--sunk{ background:var(--porcelain-deep); border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
+.band--dark{ background:var(--ink); color:var(--on-dark); }
+.band__head{ max-width:660px; }
+.band__head h2{ margin-top:13px; }
+.band__head .copy{ margin:16px 0 0; }
+.band--dark .band__head .copy{ color:var(--on-dark-mid); }
+.band--dark .stencil--lead{ color:var(--flame-hot); }
+
+/* ---------- two ways in ---------- */
+.ways{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:44px; }
+.way{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:20px; padding:28px;
+}
+.way__tag{ display:inline-flex; align-items:center; gap:8px; color:var(--flame); }
+.way__tag .dot{ width:7px; height:7px; border-radius:50%; background:currentColor; }
+.way h3{ margin-top:14px; font-size:24px; }
+.way .copy{ margin:11px 0 0; }
+.way__demo{ margin-top:22px; border-top:1px dashed var(--line); padding-top:18px; }
+.ask{
+  display:flex; align-items:center; gap:11px;
+  background:var(--porcelain); border:1px solid var(--line);
+  border-radius:999px; padding:11px 16px;
+  font-size:14.5px; color:var(--ink);
+}
+.ask__caret{ width:2px; height:15px; background:var(--flame); flex:0 0 auto; animation:blink 1.1s steps(1) infinite; }
+@keyframes blink{ 50%{ opacity:0; } }
+.ask__list{ list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:9px; }
+.ask__list li{ font-size:14px; color:var(--graphite); padding-left:18px; position:relative; }
+.ask__list li::before{ content:""; position:absolute; left:0; top:9px; width:8px; height:1px; background:var(--muted); }
+.steps{ list-style:none; margin:0; padding:0; counter-reset:step; }
+.steps li{
+  counter-increment:step; position:relative; padding-left:38px;
+  font-size:14.5px; color:var(--graphite); line-height:1.5;
+}
+.steps li + li{ margin-top:14px; }
+.steps li::before{
+  content:counter(step,decimal-leading-zero);
+  position:absolute; left:0; top:1px;
+  font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:0.08em;
+  color:var(--flame); border:1px solid rgba(22,82,200,0.28);
+  border-radius:5px; padding:2px 5px;
+}
+
+/* ---------- feature grid ---------- */
+.feats{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:42px; }
+.feat{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:18px; padding:26px;
+}
+.feat .stencil{ color:var(--flame); }
+.feat h3{ margin:12px 0 8px; }
+.feat p{ margin:0; font-size:14.5px; line-height:1.55; color:var(--graphite); }
+.feat--amber .stencil{ color:var(--sodium); }
+.feat--amber{ border-color:rgba(182,117,18,0.3); background:linear-gradient(180deg,#FBF6EC,#F7F3EA); }
+
+/* ---------- transcript (dark) ---------- */
+.scripts{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:44px; }
+.script{
+  background:#1B2024; border:1px solid rgba(255,255,255,0.09);
+  border-radius:18px; padding:24px; display:flex; flex-direction:column;
+}
+.script__k{ font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--on-dark-dim); }
+.script__q{
+  font-family:var(--display); font-weight:600; font-stretch:104%;
+  font-size:17px; letter-spacing:-0.01em; line-height:1.28;
+  color:var(--on-dark); margin:11px 0 0;
+}
+.script__a{ font-size:14.5px; line-height:1.6; color:var(--on-dark-mid); margin:14px 0 0; }
+.script__foot{ margin-top:auto; padding-top:18px; }
+.chip{
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
+  padding:5px 10px; border-radius:6px;
+}
+.chip--cite{ color:var(--flame-hot); background:rgba(127,182,255,0.1); border:1px solid rgba(127,182,255,0.26); }
+.chip--stop{ color:var(--sodium-hot); background:rgba(232,169,60,0.1); border:1px solid rgba(232,169,60,0.3); }
+.chip--gap{ color:var(--on-dark-mid); background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.14); }
+.script--stop{ border-left:2px solid var(--sodium-hot); }
+.scripts__foot{
+  margin-top:26px; font-family:var(--mono); font-size:10.5px;
+  letter-spacing:0.06em; color:var(--on-dark-dim);
+}
+
+/* ---------- operators ---------- */
+.ops{
+  background:var(--ink); color:var(--on-dark);
+  border-radius:26px; padding:52px clamp(26px,5vw,60px);
+  position:relative; overflow:hidden;
+}
+.ops__glow{
+  position:absolute; top:-90px; right:-60px; width:320px; height:320px; border-radius:50%;
+  background:radial-gradient(circle,rgba(22,82,200,0.4),transparent 68%);
+  pointer-events:none;
+}
+.ops__inner{ position:relative; max-width:720px; }
+.ops h2{ margin-top:17px; }
+.ops .copy{ color:var(--on-dark-mid); margin:17px 0 0; max-width:560px; }
+.ops__list{ list-style:none; margin:30px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:14px 30px; max-width:640px; }
+.ops__list li{ display:flex; gap:11px; align-items:flex-start; font-size:14.5px; line-height:1.45; color:#CBD1D4; }
+.ops__list b{ color:var(--on-dark); font-weight:600; }
+.ops__list .tick{ color:var(--flame-hot); flex:0 0 auto; line-height:1.45; }
+.ops__cta{ display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-top:34px; }
+.ops__fine{ font-family:var(--mono); font-size:11px; letter-spacing:0.06em; color:var(--on-dark-dim); }
+
+/* ---------- founder ---------- */
+.founder{ max-width:760px; margin:0 auto; text-align:center; }
+.founder__quote{
+  font-family:var(--display); font-weight:600; font-stretch:106%;
+  font-size:clamp(24px,3.2vw,33px); line-height:1.24; letter-spacing:-0.018em;
+  margin:24px 0 0;
+}
+/* The quote is centred; the prose under it is not — centred body copy
+   reads badly at this length. */
+.founder .copy{ max-width:580px; margin:20px auto 0; font-size:16px; text-align:left; }
+.inlineLink{ color:var(--flame); font-weight:600; text-decoration:none; border-bottom:1px solid rgba(22,82,200,0.35); }
+.inlineLink:hover{ border-bottom-color:var(--flame); }
+
+/* ---------- closing ---------- */
+.close{
+  background:linear-gradient(180deg,#FAFBF9,#DDE2DE);
+  border:1px solid rgba(20,24,27,0.16); border-radius:26px;
+  padding:58px 24px; text-align:center;
+}
+.close h2{ max-width:700px; margin:0 auto; }
+.close .lede{ max-width:520px; margin:17px auto 0; }
+.close__cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:28px; }
+
+/* ---------- footer ---------- */
+.foot{ background:var(--ink-deep); color:var(--on-dark-mid); }
+.foot__row{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:34px; padding-top:54px; }
+.foot__about{ max-width:320px; }
+.foot__about p{ font-size:14px; line-height:1.55; color:var(--on-dark-dim); margin:15px 0 0; }
+.foot__cols{ display:flex; gap:56px; flex-wrap:wrap; }
+.foot__col{ display:flex; flex-direction:column; gap:11px; }
+.foot__col .stencil{ color:var(--on-dark-dim); }
+.foot__col a{ text-decoration:none; color:#B9C0C3; font-size:14px; }
+.foot__col a:hover{ color:var(--on-dark); }
+.foot__legal{
+  margin-top:42px; padding:20px 0 34px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px;
+  font-size:13px; color:var(--on-dark-dim);
+}
+.foot__disclaimer{
+  padding-top:20px; font-size:12.5px; line-height:1.6;
+  color:#5F676B; max-width:720px;
+}
+.foot__brand .brand__name{ color:var(--on-dark); }
+
+/* ---------- responsive ---------- */
+@media (max-width:940px){
+  .hero__grid{ grid-template-columns:1fr; gap:44px; padding-top:52px; }
+  .hero .lede{ max-width:none; }
+  .ways{ grid-template-columns:1fr; }
+  .feats{ grid-template-columns:1fr 1fr; }
+  .scripts{ grid-template-columns:1fr; }
+  .nav__links a:not(.btn){ display:none; }
+  .foot__row{ flex-direction:column; }
+}
+@media (max-width:640px){
+  body{ font-size:16px; }
+  .brand__name{ font-size:17px; }
+  .btn--nav .full{ display:none; }
+  .btn--nav .short{ display:inline; }
+  .band{ padding-top:60px; padding-bottom:60px; }
+  .spec__grid{ grid-template-columns:1fr 1fr; }
+  .spec__v{ font-size:30px; }
+  .feats{ grid-template-columns:1fr; }
+  .ops__list{ grid-template-columns:1fr; }
+  .ops{ padding:40px 24px; }
+  .foot__cols{ gap:34px; }
+}
+@media (max-width:430px){
+  :root{ --pad:20px; }
+  .nav__row{ gap:12px; }
+  .brand{ gap:9px; }
+  .brand__name{ font-size:15px; white-space:nowrap; }
+  .btn--nav{ padding:8px 14px; font-size:13px; }
+}
+@media (max-width:360px){
+  /* Below this the wordmark and the CTA can't both fit; the mark carries it. */
+  .brand__name{ display:none; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .finder__scan{ opacity:.45; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <div class="shell nav__row">
+    <a class="brand" href="#top" aria-label="Smart Kitchen Docs, back to top">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <rect width="34" height="34" rx="9" fill="#14181B"/>
+        <rect x="7" y="9.5" width="20" height="15" rx="2.5" fill="none" stroke="#7FB6FF" stroke-width="1.6"/>
+        <circle cx="10" cy="12.5" r="1" fill="#7FB6FF"/><circle cx="24" cy="12.5" r="1" fill="#7FB6FF"/>
+        <circle cx="10" cy="21.5" r="1" fill="#7FB6FF"/><circle cx="24" cy="21.5" r="1" fill="#7FB6FF"/>
+        <rect x="12.5" y="15" width="9" height="1.5" rx="0.75" fill="#EDEFEC"/>
+        <rect x="12.5" y="18.2" width="6" height="1.5" rx="0.75" fill="#7A8288"/>
+      </svg>
+      <span class="brand__name">Smart Kitchen Docs</span>
+    </a>
+    <nav class="nav__links" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#inside">What's inside</a>
+      <a href="#operators">For operators</a>
+      <a class="btn btn--nav" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">
+        <!-- Two labels for one button: the long one won't fit beside the
+             wordmark under 640px. Edit both or neither. -->
+        <span class="full">Book a walkthrough</span><span class="short">Walkthrough</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section id="top" class="hero">
+  <div class="shell hero__grid">
+    <div>
+      <span class="badge"><span class="pilot" aria-hidden="true"></span>Pilot kitchens onboarding now</span>
+      <h1 class="display">The manual is 240 pages. The answer is one line.</h1>
+      <p class="lede">
+        Smart Kitchen Docs reads the manufacturer manuals for every unit in your kitchen — the mixer, the rack oven, the walk-in, the espresso machine — and answers plain questions with <strong>the page it came from</strong>. Photograph a data plate to add a unit. Nothing is invented; everything is cited.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">
+          Book a walkthrough <span aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="#how">See how it works</a>
+      </div>
+      <p class="hero__note">
+        <span class="rule" aria-hidden="true"></span>
+        From the team behind
+        <a href="https://www.smartevguides.com" target="_blank" rel="noreferrer" style="color:inherit;">Smart EV Guides ↗</a>
+      </p>
+    </div>
+
+    <!-- Signature: the data plate, in the camera's viewfinder, and the
+         answer it resolves to. This is the whole product in one image. -->
+    <div class="rig">
+      <div class="finder">
+        <span class="finder__corner finder__corner--tl" aria-hidden="true"></span>
+        <span class="finder__corner finder__corner--tr" aria-hidden="true"></span>
+        <span class="finder__corner finder__corner--bl" aria-hidden="true"></span>
+        <span class="finder__corner finder__corner--br" aria-hidden="true"></span>
+        <span class="finder__scan" aria-hidden="true"></span>
+
+        <figure class="plate" role="img" aria-label="Equipment data plate: Hobart legacy planetary mixer, model HL600-1STD, serial 31-1389-924, 60 quart, 115 volt, 60 hertz.">
+          <span class="rivet rivet--tl" aria-hidden="true"></span>
+          <span class="rivet rivet--tr" aria-hidden="true"></span>
+          <span class="rivet rivet--bl" aria-hidden="true"></span>
+          <span class="rivet rivet--br" aria-hidden="true"></span>
+          <div class="plate__head">
+            <span class="plate__mfg">Hobart</span>
+            <span class="plate__mark">Legacy&nbsp;· ML-134284</span>
+          </div>
+          <div class="plate__rows">
+            <span class="plate__k">Model</span><span class="plate__v">HL600-1STD</span>
+            <span class="plate__k">Serial</span><span class="plate__v">31-1389-924</span>
+            <span class="plate__k">Cap.</span><span class="plate__v">60 QT</span>
+            <span class="plate__k">Volts</span><span class="plate__v">115 V · 60 HZ · 1 PH</span>
+          </div>
+        </figure>
+      </div>
+
+      <span class="rig__link" aria-hidden="true"></span>
+
+      <div class="answer">
+        <p class="answer__q">“How often does the bowl lift need greasing?”</p>
+        <p class="answer__a">Lubricate the bowl-lift slides and the lift screw every six months with Hobart Lithium Grease. Wipe the old grease off the slideways first — build-up is what makes the bowl bind on the way up.</p>
+        <span class="cite">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 1.2h4L9.4 3.6V10.8H3V1.2Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M6.6 1.4v2.4h2.6" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>
+          Service manual · p. 24
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- spec strip -->
+  <div class="shell spec">
+    <div class="spec__grid">
+      <div class="spec__cell">
+        <div class="spec__k">Units covered</div>
+        <div class="spec__v">43</div>
+      </div>
+      <div class="spec__cell">
+        <div class="spec__k">Manuals ingested</div>
+        <div class="spec__v">61</div>
+      </div>
+      <div class="spec__cell">
+        <div class="spec__k">Pages searchable</div>
+        <div class="spec__v">2,200+</div>
+      </div>
+      <div class="spec__cell">
+        <div class="spec__k">Answers cited</div>
+        <div class="spec__v">100%</div>
+      </div>
+    </div>
+    <p class="spec__foot">Citation accuracy checked page-by-page against the source PDFs in a 150-task audit — zero fabricated facts.</p>
+  </div>
+</section>
+
+<!-- ===================== TWO WAYS IN ===================== -->
+<section id="how" class="band band--sunk">
+  <div class="shell">
+    <div class="band__head">
+      <div class="stencil stencil--lead">Two ways in</div>
+      <h2 class="display">Ask it, or show it the plate.</h2>
+      <p class="copy">Nobody on a line at six o'clock is going to go find a binder. Both paths start on the phone already in their hand and end at the same place: the actual manual page.</p>
+    </div>
+
+    <div class="ways">
+      <div class="way">
+        <span class="way__tag stencil"><span class="dot" aria-hidden="true"></span>Ask anything</span>
+        <h3 class="display">Type the question the way you'd say it</h3>
+        <p class="copy">No model numbers, no menu trees. The app works out which unit you mean, pulls the relevant pages, and answers in the words a cook would use — with a citation you can tap to see the page it came from.</p>
+        <div class="way__demo">
+          <div class="ask"><span class="ask__caret" aria-hidden="true"></span>why is the walk-in icing up on the back wall</div>
+          <ul class="ask__list">
+            <li>Resolves to the unit in your kitchen, not a generic model</li>
+            <li>Every claim carries a page number</li>
+            <li>Says “I don't have that manual” instead of guessing</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="way">
+        <span class="way__tag stencil"><span class="dot" aria-hidden="true"></span>Identify by plate</span>
+        <h3 class="display">Photograph the nameplate, get the docs</h3>
+        <p class="copy">Every commercial unit carries a stamped plate with the make, model and serial. Point the camera at it and the app reads it, matches the equipment, and pulls in its manuals — which is also how a new kitchen gets inventoried in an afternoon.</p>
+        <div class="way__demo">
+          <ol class="steps">
+            <li>Find the plate — the app has location hints per unit type, because half of them are behind the bottom grill.</li>
+            <li>Take the photo. Make, model and serial come off the plate.</li>
+            <li>The unit joins your kitchen with its manuals attached.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT'S INSIDE ===================== -->
+<section id="inside" class="band">
+  <div class="shell">
+    <div class="band__head">
+      <div class="stencil stencil--lead">What's inside</div>
+      <h2 class="display">A reference that behaves like a tool, not a drawer full of PDFs.</h2>
+    </div>
+
+    <div class="feats">
+      <div class="feat">
+        <div class="stencil">Cited answers</div>
+        <h3 class="display">Straight out of the manual</h3>
+        <p>Answers are assembled from the manufacturer's own pages, and every one links back to the page it came from. Tap the citation and you're looking at the document.</p>
+      </div>
+      <div class="feat">
+        <div class="stencil">Your kitchen</div>
+        <h3 class="display">Only the units you actually own</h3>
+        <p>The home screen is your equipment — your fryer, your mixer, your model of walk-in. No catalogue to wade through, no results for a machine three kitchens over.</p>
+      </div>
+      <div class="feat feat--amber">
+        <div class="stencil">Maintenance</div>
+        <h3 class="display">Schedules pulled from the book</h3>
+        <p>The app reads each manual's service intervals and proposes a schedule with the page it found it on. You review it and accept — it never invents an interval.</p>
+      </div>
+      <div class="feat feat--amber">
+        <div class="stencil">Task list</div>
+        <h3 class="display">Overdue, today, this week</h3>
+        <p>Accepted schedules become tasks with reminders on the phone. Mark one done and it reschedules itself. Proof of work, without a clipboard.</p>
+      </div>
+      <div class="feat">
+        <div class="stencil">Your own documents</div>
+        <h3 class="display">Upload what the manufacturer never posted</h3>
+        <p>Service records, the installer's notes, the manual that only exists as a photocopy in the office. Add it and it becomes searchable alongside everything else.</p>
+      </div>
+      <div class="feat">
+        <div class="stencil">Honest gaps</div>
+        <h3 class="display">It tells you when it doesn't know</h3>
+        <p>If a manual hasn't been sourced yet, the app says so and points at the manufacturer's official resources. A confident wrong answer is worse than no answer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHAT IT SAYS BACK ===================== -->
+<section class="band band--dark on-dark">
+  <div class="shell">
+    <div class="band__head">
+      <div class="stencil stencil--lead">What it says back</div>
+      <h2 class="display">Three questions, three different jobs.</h2>
+      <p class="copy">Answering is only one of them. Knowing when to stop, and admitting what isn't there, are the other two — and they're the reason a kitchen can trust the first one.</p>
+    </div>
+
+    <div class="scripts">
+      <article class="script">
+        <div class="script__k">Answers it</div>
+        <p class="script__q">“How do I change the water filter on the Bunn?”</p>
+        <p class="script__a">Walks through the steps in order, in the manual's own sequence, with the interval the manufacturer specifies. The citation opens the page so the cook can check it against what's in front of them.</p>
+        <div class="script__foot"><span class="chip chip--cite">Operator manual · p. 12</span></div>
+      </article>
+
+      <article class="script script--stop">
+        <div class="script__k">Stops short</div>
+        <p class="script__q">“The rack oven won't light — can I check the igniter?”</p>
+        <p class="script__a">Gas, refrigerant and line voltage get the same treatment: the app gives you what the manual says about the symptom, then tells you plainly that this one goes to a certified technician. It doesn't walk a baker into a gas train.</p>
+        <div class="script__foot"><span class="chip chip--stop">Call a certified tech</span></div>
+      </article>
+
+      <article class="script">
+        <div class="script__k">Admits the gap</div>
+        <p class="script__q">“What descaler does the espresso machine take?”</p>
+        <p class="script__a">Some manuals only move through distributor channels. When one isn't in the library yet, the app says the manual isn't there and links the manufacturer's official resources — rather than producing something that sounds right.</p>
+        <div class="script__foot"><span class="chip chip--gap">Manual not sourced yet</span></div>
+      </article>
+    </div>
+
+    <p class="scripts__foot">Illustrative of the app's three response types. Live answers come from your kitchen's own documents.</p>
+  </div>
+</section>
+
+<!-- ===================== FOR OPERATORS ===================== -->
+<section id="operators" class="band">
+  <div class="shell">
+    <div class="ops">
+      <div class="ops__glow" aria-hidden="true"></div>
+      <div class="ops__inner">
+        <div class="stencil" style="color:var(--flame-hot);">For restaurant operators</div>
+        <h2 class="display">One code. The whole crew. Every unit.</h2>
+        <p class="copy">A kitchen gets an access code, and everyone who works there is in — openers, closers, the weekend baker, the new hire on day two. There's no per-seat maths and nobody has to be an administrator to use it.</p>
+
+        <ul class="ops__list">
+          <li><span class="tick" aria-hidden="true">✓</span><span><b>Your equipment, inventoried</b> — on site, off the data plates, by us.</span></li>
+          <li><span class="tick" aria-hidden="true">✓</span><span><b>Manuals sourced for you</b>, including the ones you can't find online.</span></li>
+          <li><span class="tick" aria-hidden="true">✓</span><span><b>Shared access code</b> — no accounts for staff to forget.</span></li>
+          <li><span class="tick" aria-hidden="true">✓</span><span><b>Maintenance schedules</b> proposed from each manual and reviewed with you.</span></li>
+        </ul>
+
+        <div class="ops__cta">
+          <a class="btn btn--onDark" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">
+            Book a walkthrough <span aria-hidden="true">→</span>
+          </a>
+          <span class="ops__fine">Pilot onboarding is done in person · iOS &amp; Android</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOUNDER ===================== -->
+<section class="band band--sunk">
+  <div class="shell founder">
+    <div class="stencil stencil--lead">Why it exists</div>
+    <p class="founder__quote">“The information was never missing. It was just unreadable at the moment anyone needed it.”</p>
+    <p class="copy">Smart Kitchen Docs comes from the team behind <a class="inlineLink" href="https://www.smartevguides.com" target="_blank" rel="noreferrer">Smart EV Guides</a>, a tool built by a working firefighter so responders could get manufacturer rescue guidance without digging through a 40-page PDF on scene. A commercial kitchen has the same problem in a different building: the answer exists, in a manual, in a drawer, in a language nobody wants to read at six o'clock.</p>
+    <p class="copy">The rule carried over unchanged — <strong>source-linked, never generated</strong>. If the manual doesn't say it, the app doesn't either.</p>
+  </div>
+</section>
+
+<!-- ===================== CLOSING ===================== -->
+<section class="band" style="padding-bottom:84px;">
+  <div class="shell">
+    <div class="close">
+      <h2 class="display">Your kitchen already has the answers. They're in a drawer.</h2>
+      <p class="lede">We'll walk your kitchen, inventory the equipment off the plates, source the manuals, and hand your crew something they'll actually open.</p>
+      <div class="close__cta">
+        <a class="btn btn--primary" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">Book a walkthrough</a>
+        <a class="btn btn--ghost" href="mailto:dylan@smartevguides.com?subject=Question%20%E2%80%94%20Smart%20Kitchen%20Docs">Ask a question</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__row">
+      <div class="foot__about">
+        <div class="brand foot__brand">
+          <!-- Background square is #1B2024 here, not the #14181B used in the
+               nav: the footer sits on #0D1013, and the darker square vanishes
+               into it. -->
+          <svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true">
+            <rect width="34" height="34" rx="9" fill="#1B2024"/>
+            <rect x="7" y="9.5" width="20" height="15" rx="2.5" fill="none" stroke="#7FB6FF" stroke-width="1.6"/>
+            <circle cx="10" cy="12.5" r="1" fill="#7FB6FF"/><circle cx="24" cy="12.5" r="1" fill="#7FB6FF"/>
+            <circle cx="10" cy="21.5" r="1" fill="#7FB6FF"/><circle cx="24" cy="21.5" r="1" fill="#7FB6FF"/>
+            <rect x="12.5" y="15" width="9" height="1.5" rx="0.75" fill="#EDEFEC"/>
+            <rect x="12.5" y="18.2" width="6" height="1.5" rx="0.75" fill="#7A8288"/>
+          </svg>
+          <span class="brand__name">Smart Kitchen Docs</span>
+        </div>
+        <p>Manufacturer equipment documentation for commercial kitchens. Cited to the page, honest about its gaps.</p>
+      </div>
+
+      <div class="foot__cols">
+        <div class="foot__col">
+          <div class="stencil">Product</div>
+          <a href="#how">How it works</a>
+          <a href="#inside">What's inside</a>
+          <a href="#operators">For operators</a>
+        </div>
+        <div class="foot__col">
+          <div class="stencil">Company</div>
+          <a href="support.html">Support</a>
+          <a href="privacy.html">Privacy policy</a>
+          <a href="mailto:dylan@smartevguides.com">dylan@smartevguides.com</a>
+        </div>
+        <div class="foot__col">
+          <div class="stencil">Also from us</div>
+          <a href="https://www.smartevguides.com" target="_blank" rel="noreferrer">Smart EV Guides ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="foot__disclaimer">
+      Smart Kitchen Docs is a reference tool. It does not replace a certified technician, the manufacturer's instructions, or your local code. Work involving gas, refrigerant or line voltage should be carried out by a qualified professional.
+    </p>
+
+    <div class="foot__legal">
+      <span>© 2026 DAG LLC. All rights reserved.</span>
+      <span class="stencil">smartkitchendocs.com</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

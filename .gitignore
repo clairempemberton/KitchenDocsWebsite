@@ -1,0 +1,9 @@
+# Review screenshots taken while building the page — safe to delete.
+# Deliberately broad: any stray PNG here is a screenshot, since the site
+# itself ships no raster images.
+*.png
+.playwright-mcp/
+
+# OS / editor
+.DS_Store
+Thumbs.db
