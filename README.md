@@ -72,6 +72,24 @@ py -3.12 -m http.server 8000
 - [ ] Swap the illustrative hero answer and the three transcript cards for real
       captures from the app when the pilot has some.
 
+## The maintenance section
+
+`#maintenance` describes shipped behaviour: intervals extracted from each
+manual with page citations, review-and-accept, Overdue / Today / This week
+bucketing, mark-done rescheduling, and local phone notifications.
+
+The `.next` strip at the bottom of that section ("Not there yet") names two
+things that are **not built**: calendar sync (Google Calendar / Outlook) and a
+completion log for health-inspection and NFPA 96 records. Both are W3 items in
+Ryan's brief. **When either ships, move it out of that strip and into the
+numbered flow above** — leaving it there once it's real undersells the product,
+and leaving it in the flow before it's real is the one thing this site's whole
+argument can't afford.
+
+The task card is illustrative, built from real units in the pilot bakery
+(Hobart HL600, True T-49F, Revent 626U) with plausible intervals. Swap in a
+real screenshot when there's one worth showing.
+
 ## Content notes
 
 - Every email link points at `dylan@smartevguides.com`.

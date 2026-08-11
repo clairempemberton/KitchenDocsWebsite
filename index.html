@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smart Kitchen Docs — every equipment manual in your kitchen, answered</title>
-<meta name="description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Photograph a data plate to add equipment. Built by the team behind Smart EV Guides.">
+<meta name="description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Reads each manual's service intervals into a maintenance schedule you approve, then reminds you. Built by the team behind Smart EV Guides.">
 <link rel="canonical" href="https://smartkitchendocs.com/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#E9EBE8">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Smart Kitchen Docs">
 <meta property="og:title" content="Smart Kitchen Docs — every equipment manual in your kitchen, answered">
-<meta property="og:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from.">
+<meta property="og:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Plus maintenance schedules read from the manuals.">
 <meta property="og:url" content="https://smartkitchendocs.com/">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Smart Kitchen Docs — every equipment manual in your kitchen, answered">
-<meta name="twitter:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from.">
+<meta name="twitter:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Plus maintenance schedules read from the manuals.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@104..118,600..800&family=Instrument+Sans:wght@400;500;600&family=Martian+Mono:wght@400..600&display=swap" rel="stylesheet">
@@ -358,6 +358,53 @@ strong{ color:var(--ink); font-weight:600; }
 .feat--amber .stencil{ color:var(--sodium); }
 .feat--amber{ border-color:rgba(182,117,18,0.3); background:linear-gradient(180deg,#FBF6EC,#F7F3EA); }
 
+/* ---------- maintenance ---------- */
+.maint{ display:grid; grid-template-columns:1.02fr 0.98fr; gap:52px; align-items:start; margin-top:40px; }
+.maint .steps{ margin-top:6px; }
+
+/* The task card mirrors the hero's answer card: same panel, same citation
+   treatment, so "what it answers" and "what it schedules" read as one system. */
+.tasks{
+  background:var(--panel); border:1px solid var(--line);
+  border-radius:18px; overflow:hidden;
+  box-shadow:0 14px 34px rgba(20,24,27,0.08);
+}
+.tasks__head{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:15px 20px; background:var(--porcelain);
+  border-bottom:1px solid var(--line);
+}
+.tasks__title{
+  font-family:var(--display); font-weight:700; font-stretch:108%;
+  font-size:15px; letter-spacing:-0.01em;
+}
+.bucket{ padding:14px 20px 2px; color:var(--muted); }
+.task{ display:flex; gap:13px; align-items:flex-start; padding:10px 20px 12px; }
+.task__dot{ width:8px; height:8px; border-radius:50%; margin-top:6px; flex:0 0 auto; background:var(--muted); }
+.task__dot--over{ background:var(--sodium-hot); box-shadow:0 0 0 3px rgba(232,169,60,0.22); }
+.task__dot--now{ background:var(--flame); box-shadow:0 0 0 3px rgba(22,82,200,0.15); }
+.task__body{ display:block; flex:1; min-width:0; }
+.task__what{ display:block; font-size:14.5px; font-weight:500; color:var(--ink); line-height:1.35; }
+.task__meta{
+  display:block;
+  font-family:var(--mono); font-size:10px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--muted); margin-top:5px;
+}
+.task__when{
+  font-family:var(--mono); font-size:10px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--muted); flex:0 0 auto; margin-top:3px;
+}
+.task__when--over{ color:var(--sodium); }
+
+/* Honest-roadmap strip. Amber, because it belongs to the maintenance thread. */
+.next{
+  margin-top:36px; background:var(--panel);
+  border:1px solid var(--line); border-left:2px solid var(--sodium);
+  border-radius:0 14px 14px 0; padding:20px 24px;
+}
+.next .stencil{ color:var(--sodium); }
+.next p{ margin:9px 0 0; font-size:14.5px; line-height:1.6; color:var(--graphite); }
+
 /* ---------- transcript (dark) ---------- */
 .scripts{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:44px; }
 .script{
@@ -457,6 +504,7 @@ strong{ color:var(--ink); font-weight:600; }
   .hero__grid{ grid-template-columns:1fr; gap:44px; padding-top:52px; }
   .hero .lede{ max-width:none; }
   .ways{ grid-template-columns:1fr; }
+  .maint{ grid-template-columns:1fr; gap:38px; }
   .feats{ grid-template-columns:1fr 1fr; }
   .scripts{ grid-template-columns:1fr; }
   .nav__links a:not(.btn){ display:none; }
@@ -513,6 +561,7 @@ strong{ color:var(--ink); font-weight:600; }
     <nav class="nav__links" aria-label="Main">
       <a href="#how">How it works</a>
       <a href="#inside">What's inside</a>
+      <a href="#maintenance">Maintenance</a>
       <a href="#operators">For operators</a>
       <a class="btn btn--nav" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">
         <!-- Two labels for one button: the long one won't fit beside the
@@ -669,15 +718,15 @@ strong{ color:var(--ink); font-weight:600; }
         <h3 class="display">Only the units you actually own</h3>
         <p>The home screen is your equipment — your fryer, your mixer, your model of walk-in. No catalogue to wade through, no results for a machine three kitchens over.</p>
       </div>
-      <div class="feat feat--amber">
-        <div class="stencil">Maintenance</div>
-        <h3 class="display">Schedules pulled from the book</h3>
-        <p>The app reads each manual's service intervals and proposes a schedule with the page it found it on. You review it and accept — it never invents an interval.</p>
+      <div class="feat">
+        <div class="stencil">Every document</div>
+        <h3 class="display">Operator, service, parts, spec</h3>
+        <p>A unit isn't one PDF. The operator manual, the service manual, the parts list and the spec sheet are indexed together, so an answer comes from whichever one actually covers it.</p>
       </div>
       <div class="feat feat--amber">
-        <div class="stencil">Task list</div>
-        <h3 class="display">Overdue, today, this week</h3>
-        <p>Accepted schedules become tasks with reminders on the phone. Mark one done and it reschedules itself. Proof of work, without a clipboard.</p>
+        <div class="stencil">Knows when to stop</div>
+        <h3 class="display">Gas, refrigerant, line voltage</h3>
+        <p>Questions that cross into a certified technician's work get the manual's context and then a clear handoff. The app won't walk a baker through a gas train.</p>
       </div>
       <div class="feat">
         <div class="stencil">Your own documents</div>
@@ -726,6 +775,70 @@ strong{ color:var(--ink); font-weight:600; }
     </div>
 
     <p class="scripts__foot">Illustrative of the app's three response types. Live answers come from your kitchen's own documents.</p>
+  </div>
+</section>
+
+<!-- ===================== MAINTENANCE ===================== -->
+<section id="maintenance" class="band band--sunk">
+  <div class="shell">
+    <div class="band__head">
+      <div class="stencil stencil--lead">Maintenance</div>
+      <h2 class="display">The manual already told you when. It just never reminded you.</h2>
+      <p class="copy">Grease the bowl-lift every six months. Pull the water filter monthly. Check the door gasket weekly. Every manual carries its service intervals, and every kitchen loses them the day the binder goes in a drawer.</p>
+    </div>
+
+    <div class="maint">
+      <div>
+        <ol class="steps">
+          <li><strong>It reads the intervals out of each manual</strong> — the schedule is extracted from the book, and every item carries the page it was found on.</li>
+          <li><strong>You review and accept.</strong> Nothing lands on your schedule that you didn't approve, and nothing is proposed that the manual doesn't say.</li>
+          <li><strong>Tasks sort themselves</strong> into overdue, today, this week and later, and the phone reminds you when one comes due.</li>
+          <li><strong>Mark it done and it reschedules</strong> to the next interval. No spreadsheet, no clipboard, no wall calendar going soft above the sink.</li>
+        </ol>
+      </div>
+
+      <div class="tasks">
+        <div class="tasks__head">
+          <span class="tasks__title">This week</span>
+          <span class="stencil" style="color:var(--muted);">3 due</span>
+        </div>
+
+        <div class="bucket stencil">Overdue</div>
+        <div class="task">
+          <span class="task__dot task__dot--over" aria-hidden="true"></span>
+          <span class="task__body">
+            <span class="task__what">Grease the bowl-lift slides and screw</span>
+            <span class="task__meta">Hobart HL600 · Service manual p. 24</span>
+          </span>
+          <span class="task__when task__when--over">3d late</span>
+        </div>
+
+        <div class="bucket stencil">Today</div>
+        <div class="task">
+          <span class="task__dot task__dot--now" aria-hidden="true"></span>
+          <span class="task__body">
+            <span class="task__what">Clean the condenser coils</span>
+            <span class="task__meta">True T-49F · Service manual p. 53</span>
+          </span>
+          <span class="task__when">Today</span>
+        </div>
+
+        <div class="bucket stencil">This week</div>
+        <div class="task">
+          <span class="task__dot" aria-hidden="true"></span>
+          <span class="task__body">
+            <span class="task__what">Inspect the door gasket seal</span>
+            <span class="task__meta">Revent 626U · Operator manual p. 31</span>
+          </span>
+          <span class="task__when">Thu</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="next">
+      <div class="stencil">Not there yet</div>
+      <p>Calendar sync to Google Calendar and Outlook, and a completion log you could hand a health inspector or use for NFPA 96 hood-cleaning records, are next on the build — they aren't in the app today. Reminders right now are local to the phone, which means they fire whether or not the kitchen's Wi-Fi is up.</p>
+    </div>
   </div>
 </section>
 
@@ -808,6 +921,7 @@ strong{ color:var(--ink); font-weight:600; }
           <div class="stencil">Product</div>
           <a href="#how">How it works</a>
           <a href="#inside">What's inside</a>
+          <a href="#maintenance">Maintenance</a>
           <a href="#operators">For operators</a>
         </div>
         <div class="foot__col">
