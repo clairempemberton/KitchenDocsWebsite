@@ -2,6 +2,14 @@
 
 Design spec, 2026-09-18. Status: approved direction, not yet implemented.
 
+**Applies to all three surfaces:** the marketing site (`KitchenDocsWebsite`), the
+manager console (`Restaurant_Equiptment_app/web`) and the mobile app
+(`Restaurant_Equiptment_app/mobile`). One identity, everywhere — app icon, splash,
+login, console and marketing.
+
+A separate spec covers the app's information architecture and interaction redesign.
+This document governs identity only: name, palette, type, mark and voice.
+
 ## The problem
 
 The site is committed to a cold identity and says so in its own README: "data-plate
@@ -72,11 +80,18 @@ for counsel at filing time. It does not change the design.
 This is the guardrail that keeps the rebrand professional. It is deliberately narrow,
 and deliberately expandable later.
 
-**She appears in:** favicon, app icon, nav mark, hero, occasional section openers,
-social avatars, sales deck, merch.
+**She appears in:**
 
-**She does not appear in:** answers, the maintenance list, or any surface a user is
-working on. The product UI barely changes in this pass.
+| Surface | Where |
+|---|---|
+| Marketing site | Favicon, nav mark, hero, occasional section openers |
+| Manager console | Favicon (replacing the grey "K" data-URI placeholder), the sign-in screen, the header mark |
+| Mobile app | App icon, splash, login screen, the empty state before a kitchen is set up |
+| Elsewhere | Social avatars, sales deck, merch |
+
+**She does not appear in:** answers, the maintenance list, the calendar, or any surface
+a user is working on — on any platform. Her job is the front door and the identity
+plate; once someone is working, she is gone.
 
 **She does not speak.** No first person, ever. Copy stays factual and professional;
 third person is allowed but used sparingly. The warmth is carried by palette, type and
@@ -123,6 +138,54 @@ Contrast against the new `#FBF7F0` ground:
 
 The split between `--blue` (fills) and `--blue-text` (text) is not optional. Using the
 button blue for link text fails AA on the new ground.
+
+## Applying the palette to the app
+
+The app (`web/styles.css` `:root`, and `mobile/lib/ui/theme.dart`) runs on pure neutral
+greys — colder than the marketing site, not warmer. Same thesis, executed harder.
+
+| App token | Now | New |
+|---|---|---|
+| `--bg` | `#f2f2f3` | `#FBF7F0` |
+| `--panel` | `#ffffff` | `#FFFDF9` |
+| `--panel2` | `#e9e9ea` | `#F2EADD` |
+| `--panel3` | `#f2f2f3` | `#F7F1E7` |
+| `--ink` | `#1d1f20` | `#2A231E` |
+| `--dim` / `--faint` | `#5d5d60` | `#6E625A` |
+| `--accent` | `#5980a6` | `#3A72D4` (fills) |
+| `--accent-dark` | `#416180` | `#24509E` |
+| *(new)* `--accent-text` | — | `#2C60C4` (link and accent text) |
+| `--warn` | `#8a5a08` | `#8F5A0D` |
+| `--line` | `#d4d4d7` | warm equivalent |
+| `--radius` | **`0`** | `10px` |
+| `--radius-chip` | `2px` | `6px` |
+| `--shadow` | **`none`** | one soft elevation |
+| `--sans` | Barlow | Instrument Sans |
+| `--heading` | Barlow Condensed | Fraunces |
+| `--mono` | `"Barlow", ui-monospace, …` | Courier Prime — **see below** |
+
+`--panel2` currently measures **1.09:1** against the page ground (the stylesheet's own
+comment records this). Surfaces are therefore separated by hairline border alone, which
+is why the console reads as an undifferentiated field of squares. Raising the fill
+separation is what lets most of the 61 `border:` rules be deleted rather than restyled.
+
+### Bug found while mapping: `--mono` is not monospaced
+
+```css
+--mono: "Barlow", ui-monospace, Consolas, monospace;
+```
+
+Barlow is a proportional face, and it *is* loaded (`web/assets/fonts/Barlow-*.woff2`),
+so it wins the cascade and the monospace fallbacks are never reached. Every cited manual
+quote is currently rendering proportional. Fix regardless of the rebrand — it is on the
+exact surface where "this is evidence, not prose" has to be legible at a glance.
+
+### Status and category tints
+
+The existing `--occ-*` status tokens and `--cat-*` category tints are well-reasoned —
+their comments correctly establish that status owns colour and category owns shape, so
+a category tint can never be misread as a status. **Keep that rule.** Retune the hues to
+sit on warm paper rather than neutral grey; do not restructure the system.
 
 ## Typography
 
@@ -191,22 +254,53 @@ Tone rules:
 
 ## Files touched
 
+### `KitchenDocsWebsite` (marketing)
+
 | File | Change |
 |---|---|
 | `index.html` | Token block, font links, mark SVGs, hero, section openers, copy pass |
+| `index.html` meta | `theme-color` `#E9EBE8` → `#FBF7F0` |
 | `doc.css` | Same token and type changes for the secondary pages |
 | `favicon.svg` | Replace the data plate with the Nellie head mark |
 | `privacy.html`, `support.html` | Inherit via `doc.css`; header mark swap |
-| `README.md` | Rewrite the identity paragraph — it currently documents the old motif |
-| new asset files | Nellie SVGs (full body, head, favicon weight) |
-| `index.html` meta | `theme-color` `#E9EBE8` → `#FBF7F0` |
+| `README.md` | Rewrite the identity paragraph — it documents the old motif |
+| new assets | Nellie SVGs (full body, head, favicon weight) |
 
 No build step, no dependencies. That does not change.
 
+### `Restaurant_Equiptment_app/web` (manager console)
+
+| File | Change |
+|---|---|
+| `styles.css` `:root` | Token mapping above, including radius, elevation and the `--mono` fix |
+| `styles.css` body | Delete borders made redundant by fill separation and elevation |
+| `index.html` | Replace the grey "K" data-URI favicon with Nellie; brand mark in `.top`; font links |
+| `assets/fonts/` | Add Fraunces, Instrument Sans, Courier Prime; retire Barlow Condensed |
+
+### `Restaurant_Equiptment_app/mobile` (app)
+
+| File | Change |
+|---|---|
+| `lib/ui/theme.dart` | Same token mapping; radius and elevation scale |
+| app icon / splash | Nellie |
+| `lib/ui/login_screen.dart` | Nellie on the front door |
+| `pubspec.yaml`, fonts | Fraunces, Instrument Sans, Courier Prime |
+
+### Spec location
+
+This file currently lives in the marketing repo because that is where the brand work
+started. It governs all three surfaces, and the two repos are not linked, so it needs a
+canonical home before implementation — decide whether to move it into
+`Restaurant_Equiptment_app/docs/` (where the larger share of the work happens) and leave
+a pointer here.
+
 ## Out of scope for this pass
 
-- Nellie in the product UI (answers, maintenance list, empty states).
+- Nellie on working surfaces (answers, maintenance list, calendar). The app icon,
+  splash, login and pre-setup empty state are in scope; everything past the front door
+  is not.
 - First-person voice or any Nellie dialogue.
+- The app's information architecture and interaction redesign — its own spec.
 - "Nellie's Trunk" as feature naming.
 - Completion celebrations and sleeping/idle states.
 - An `og:image` — still blocked on real app screenshots, per the README.
