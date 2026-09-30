@@ -1,7 +1,8 @@
 # Review screenshots taken while building the page — safe to delete.
 # Deliberately broad: any stray PNG here is a screenshot, since the site
-# itself ships no raster images.
+# itself ships no raster images except the brand art in assets/.
 *.png
+!assets/*.png
 .playwright-mcp/
 
 # OS / editor

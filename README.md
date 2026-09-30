@@ -4,18 +4,25 @@ Marketing site for **Smart Kitchen Docs** — manufacturer equipment documentati
 commercial kitchens. Static HTML, no build step, deployed to GitHub Pages.
 
 Sibling site to [smartevguides.com](https://www.smartevguides.com); same structural
-rhythm, its own visual identity (data-plate motif, porcelain/graphite palette,
-gas-flame blue accent).
+rhythm, its own visual identity: **Nellie**, the elephant mascot shared with the
+Smart Kitchen Docs app (warm paper, warm charcoal, soft blue; Fraunces + Instrument
+Sans). Brand spec: `docs/superpowers/specs/2026-09-18-nellie-brand-identity-design.md`.
+
+The **Log in** button (nav and footer) points at the customer console,
+`https://app.smartkitchendocs.com` — the Cloudflare Pages project `smart-kitchen-docs`
+with `app.smartkitchendocs.com` added as a custom domain. Change that URL in
+`index.html` (two places) if the console ever moves.
 
 ## Files
 
 | File | What it is |
 |---|---|
 | `index.html` | The landing page. All CSS is inline in a single `<style>` block. |
-| `doc.css` | Shared styling for the secondary pages only. |
+| `doc.css` | Shared styling for the secondary pages only (tokens mirror `index.html`). |
 | `privacy.html` | Privacy policy. **Draft — review before DNS goes live.** |
 | `support.html` | Support / FAQ page. |
-| `favicon.svg` | Site icon (data plate mark). |
+| `assets/nellie.png` | Nellie — favicon, nav mark, hero, footer. Copied from the app's `web/assets`. |
+| `assets/fonts/` | Self-hosted Fraunces, Instrument Sans, Courier Prime (SIL OFL). |
 | `CNAME` | Custom domain for GitHub Pages. |
 | `robots.txt`, `sitemap.xml` | Search indexing. |
 | `.nojekyll` | Stops Pages running Jekyll over the files. |
