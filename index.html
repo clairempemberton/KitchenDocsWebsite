@@ -3,557 +3,683 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Smart Kitchen Docs — every equipment manual in your kitchen, answered</title>
+<title>Smart Kitchen Docs: every equipment manual in your kitchen, answered</title>
 <meta name="description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Reads each manual's service intervals into a maintenance schedule you approve, then reminds you. Built by the team behind Smart EV Guides.">
 <link rel="canonical" href="https://smartkitchendocs.com/">
 <link rel="icon" href="assets/nellie.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/nellie.png">
-<meta name="theme-color" content="#FBF7F0">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Smart Kitchen Docs">
-<meta property="og:title" content="Smart Kitchen Docs — every equipment manual in your kitchen, answered">
+<meta property="og:title" content="Smart Kitchen Docs: every equipment manual in your kitchen, answered">
 <meta property="og:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Plus maintenance schedules read from the manuals.">
 <meta property="og:url" content="https://smartkitchendocs.com/">
 <meta name="twitter:card" content="summary">
 <meta property="og:image" content="https://smartkitchendocs.com/assets/nellie.png">
-<meta name="twitter:title" content="Smart Kitchen Docs — every equipment manual in your kitchen, answered">
+<meta name="twitter:title" content="Smart Kitchen Docs: every equipment manual in your kitchen, answered">
 <meta name="twitter:description" content="Ask a plain-language question about any unit in your commercial kitchen and get the answer straight out of the manufacturer manual, with the page it came from. Plus maintenance schedules read from the manuals.">
-<link rel="preload" href="assets/fonts/Fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/InstrumentSans-var.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-@font-face{font-family:"Fraunces";src:url("assets/fonts/Fraunces-var.woff2") format("woff2-variations");font-weight:600 700;font-display:swap}
-@font-face{font-family:"Instrument Sans";src:url("assets/fonts/InstrumentSans-var.woff2") format("woff2-variations");font-weight:400 700;font-display:swap}
 @font-face{font-family:"Courier Prime";src:url("assets/fonts/CourierPrime-400.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Courier Prime";src:url("assets/fonts/CourierPrime-700.woff2") format("woff2");font-weight:700;font-display:swap}
 
 /* ============================================================
-   Smart Kitchen Docs — landing page
-   Identity: Nellie (see docs/superpowers/specs). Warm paper ground,
-   warm charcoal ink, the app's soft blue as the only accent, and
-   sodium amber reserved for the safety / maintenance thread.
-   Token NAMES predate the rebrand (--porcelain, --flame, --graphite);
-   the values are the new palette. --flame is a FILL colour; text in
-   the accent uses --flame-text (4.5:1+ on paper), never --flame.
+   Smart Kitchen Docs: landing page
+   Visual direction: the manager console's "Clean" look
+   (app.smartkitchendocs.com, web/styles.css). A white page, slate
+   inks, the system UI sans, sentence-case labels, white panes edged
+   in a light grey, and flat tinted tiles for the figures. The site
+   and the product a customer logs in to should read as one thing.
+
+   Tokens are the console's, by name and value. Two older names
+   (--muted, --flame-hot) are kept as aliases because inline styles
+   in the markup still reference them.
+
+   ACCENT IS TWO TOKENS: --accent is a fill (white on it 4.63:1),
+   --accent-text is the same hue dark enough for text on white
+   (5.50:1). Never set colour:var(--accent) on a text node.
    ============================================================ */
 
 :root{
-  --porcelain:#FBF7F0;
-  --porcelain-deep:#F2EADD;
-  --panel:#FFFDF9;
-  --ink:#2A231E;
-  --ink-deep:#1F1A16;
-  --graphite:#6E625A;
-  --muted:#857A71;
-  --line:rgba(42,35,30,0.13);
-  --line-soft:rgba(42,35,30,0.08);
-  --flame:#3A72D4;
-  --flame-text:#2C60C4;
-  --flame-deep:#24509E;
-  --flame-hot:#8DBAF0;
-  --nellie:#6FA8E8;
-  --sodium:#A86A10;
-  --sodium-hot:#E8A93C;
-  --on-dark:#F6F0E7;
-  --on-dark-mid:#C7BDB1;
-  --on-dark-dim:#9C9187;
+  --bg:#ffffff;
+  --panel:#ffffff;
+  --tile:#f8f9fb;
+  --tile-hover:#f2f4f7;
+  --sunk:#f9fafb;
+  --ink:#101828;
+  --dim:#475467;
+  --faint:#667085;
+  --line:rgba(16,24,40,.08);
+  --outline:#e4e7ec;
+  --outline-strong:#d0d5dd;
+  --outline-strong-hover:#98a2b3;
 
-  --shell:1180px;
-  --pad:24px;
+  --accent:#3a72d4;
+  --accent-text:#2c60c4;
+  --accent-dark:#24509e;
+  --accent-soft:#eef4ff;
+  --accent-soft-line:#d1e0ff;
+  --accent-wash:#f5f8ff;
 
-  --display:'Fraunces', Georgia, serif;
-  --body:'Instrument Sans', system-ui, sans-serif;
-  --mono:'Courier Prime', ui-monospace, monospace;
+  --tone-overdue-bg:#fef3f2; --tone-overdue-line:#fecdca; --tone-overdue-ink:#b42318;
+  --tone-today-bg:#fffaeb;   --tone-today-line:#fedf89;   --tone-today-ink:#b54708;
+  --ok:#067647; --ok-bg:#ecfdf3;
+
+  --radius:10px;
+  --radius-sm:8px;
+  --radius-lg:16px;
+  --radius-pill:999px;
+  --shadow:0 1px 2px rgba(16,24,40,.05);
+  --shadow-float:0 1px 2px rgba(16,24,40,.04),0 8px 24px -12px rgba(16,24,40,.14);
+
+  /* aliases still named by inline styles in the markup */
+  --muted:var(--faint);
+  --flame-hot:var(--accent-text);
+
+  /* Edge to edge like the console, a little over twice its inset: 64px either side (28px on a
+     phone), no centred column. */
+  --shell:none;
+  --pad:64px;
+
+  --sans:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,sans-serif;
+  --mono:"Courier Prime",ui-monospace,Consolas,monospace;
 }
 
 *{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; background:var(--bg); }
 body{
   margin:0;
-  background:var(--porcelain);
+  background:var(--bg);
   color:var(--ink);
-  font-family:var(--body);
-  font-size:17px;
-  line-height:1.6;
+  font:16px/1.6 var(--sans);
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
 img{ max-width:100%; display:block; }
 a{ color:inherit; }
-::selection{ background:rgba(58,114,212,0.24); color:var(--ink); }
+::selection{ background:rgba(58,114,212,.22); color:var(--ink); }
 
+:focus{ outline:none; }
 :focus-visible{
-  outline:2px solid var(--flame);
-  outline-offset:3px;
+  outline:2px solid var(--accent);
+  outline-offset:2px;
   border-radius:4px;
 }
-.on-dark :focus-visible{ outline-color:var(--flame-hot); }
 
 .shell{ max-width:var(--shell); margin:0 auto; padding-left:var(--pad); padding-right:var(--pad); }
-section[id]{ scroll-margin-top:76px; }
+section[id]{ scroll-margin-top:84px; }
 
 /* ---------- type roles ---------- */
 .display{
-  font-family:var(--display);
+  font-family:var(--sans);
   font-weight:700;
-  letter-spacing:-0.02em;
-  line-height:1.08;
+  letter-spacing:-.03em;
+  line-height:1.1;
   margin:0;
+  color:var(--ink);
 }
-h1.display{ font-size:clamp(37px,4.6vw,56px); }
-h2.display{ font-size:clamp(29px,3.9vw,45px); }
+h1.display{ font-size:clamp(36px,4.8vw,54px); letter-spacing:-.035em; line-height:1.06; }
+/* The hero headline is sized to its column, not the window: the column is
+   whatever the 420px visual and the gap leave over, so the size tracks
+   that and each sentence holds one line at every two-column width. */
+.hero h1.display{
+  font-size:clamp(40px, calc(7.4vw - 42px), 64px);
+  letter-spacing:-.04em; line-height:1.04;
+}
+/* Each sentence on its own line, and each balanced on its own when a
+   phone makes it wrap, so neither leaves one word stranded. */
+.h1__line{ display:block; text-wrap:balance; }
+h2.display{ font-size:clamp(28px,3.4vw,38px); letter-spacing:-.025em; line-height:1.15; }
 h3.display{
-  font-size:21px;
+  font-size:17px;
   font-weight:600;
-  letter-spacing:-0.01em;
-  line-height:1.22;
+  letter-spacing:-.01em;
+  line-height:1.3;
   margin:0;
 }
 
-/* Stencil label — the small uppercase field name stamped on a plate.
-   Used for eyebrows, plate fields and stat captions so the motif is
-   carried by the structure, not by decoration. */
+/* Section labels: sentence case, as the console's eyebrows are. The
+   letterspaced uppercase the old identity used shouts in a UI sans. */
 .stencil{
-  font-family:var(--body);
-  font-weight:600;
-  font-size:11.5px;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
+  font-family:var(--sans);
+  font-weight:500;
+  font-size:14px;
+  letter-spacing:0;
+  text-transform:none;
   line-height:1.4;
+  color:var(--faint);
 }
-.stencil--lead{ font-size:12px; color:var(--flame-text); }
+.stencil--lead{ font-size:15px; font-weight:600; color:var(--accent-text); }
 
-.lede{ font-size:18.5px; line-height:1.55; color:var(--graphite); }
-.copy{ font-size:15.5px; line-height:1.6; color:var(--graphite); }
+.lede{ font-size:18px; line-height:1.6; color:var(--dim); }
+.copy{ font-size:16px; line-height:1.65; color:var(--dim); }
 strong{ color:var(--ink); font-weight:600; }
 
-/* ---------- buttons ---------- */
+/* ---------- buttons (console .btn / .btn.sec) ---------- */
 .btn{
-  display:inline-flex; align-items:center; gap:10px;
-  font-family:var(--body); font-weight:600; font-size:15px;
-  text-decoration:none; padding:14px 22px; border-radius:10px;
-  border:1px solid transparent;
-  transition:background .15s ease, border-color .15s ease, color .15s ease, transform .15s ease;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:44px;
+  font-family:var(--sans); font-weight:600; font-size:15px; line-height:1.25;
+  text-decoration:none; padding:11px 18px; border-radius:var(--radius);
+  border:1px solid transparent; white-space:nowrap;
+  transition:background .15s ease, border-color .15s ease, color .15s ease;
 }
-.btn:active{ transform:translateY(1px); }
-.btn--primary{ background:var(--flame); color:#fff; box-shadow:0 1px 2px rgba(42,35,30,.14); }
-.btn--primary:hover{ background:var(--flame-deep); }
-.btn--ghost{ background:var(--panel); color:var(--ink); border-color:var(--line); }
-.btn--ghost:hover{ border-color:rgba(42,35,30,0.34); }
-.btn--onDark{ background:var(--flame-hot); color:#14202F; }
-.btn--onDark:hover{ background:#B0D0F6; }
-.btn--nav{ padding:9px 17px; font-size:14px; border-radius:999px; background:var(--flame); color:#fff; white-space:nowrap; }
-.btn--nav:hover{ background:var(--flame-deep); }
-/* Log in is the returning customer's door, so it is quieter than the
-   walkthrough button beside it: outlined, not filled. */
-.btn--login{ padding:8px 17px; font-size:14px; border-radius:999px; background:transparent; color:var(--ink); border-color:rgba(42,35,30,0.34); white-space:nowrap; }
-.btn--login:hover{ background:var(--panel); border-color:var(--ink); }
+.btn--primary,.btn--nav,.btn--onDark{
+  background:var(--accent-text); border-color:var(--accent-text); color:#fff;
+  box-shadow:0 1px 2px rgba(16,24,40,.06);
+}
+.btn--primary:hover,.btn--nav:hover,.btn--onDark:hover{ background:var(--accent-dark); border-color:var(--accent-dark); }
+.btn--primary:active,.btn--nav:active,.btn--onDark:active{ background:#1f4687; border-color:#1f4687; }
+.btn--ghost,.btn--login{
+  background:var(--panel); color:var(--ink); border-color:var(--outline-strong);
+  box-shadow:var(--shadow);
+}
+.btn--ghost:hover,.btn--login:hover{ background:#f9fafb; border-color:var(--outline-strong-hover); }
+.btn--ghost:active,.btn--login:active{ background:#f2f4f7; }
+.btn--nav,.btn--login{ min-height:40px; padding:9px 16px; font-size:15px; }
 
-/* ---------- nav ---------- */
+/* ---------- nav (console top bar) ---------- */
 .nav{
   position:sticky; top:0; z-index:60;
-  background:rgba(251,247,240,0.88);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line-soft);
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(1.4) blur(12px); -webkit-backdrop-filter:saturate(1.4) blur(12px);
+  border-bottom:1px solid var(--line);
 }
-.nav__row{ display:flex; align-items:center; justify-content:space-between; gap:24px; padding-top:13px; padding-bottom:13px; }
-.brand{ display:flex; align-items:center; gap:11px; text-decoration:none; color:inherit; }
+/* Three columns: brand left, destinations centred on the page, buttons
+   right. The two outer tracks are equal, so the middle one sits on the
+   page's centre line whatever the brand and buttons measure. */
+.nav__row{
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  grid-template-areas:"brand links cta";
+  align-items:center; gap:12px 28px; padding-top:16px; padding-bottom:16px;
+}
+.nav__row>.brand{ grid-area:brand; justify-self:start; }
+.brand{ display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink); }
 .brand__mark{ height:30px; width:auto; flex:0 0 auto; }
-.brand__name{ font-family:var(--display); font-weight:700; font-size:19px; letter-spacing:-0.01em; }
-.nav__links{ display:flex; align-items:center; gap:26px; }
-.nav__cta{ display:flex; align-items:center; gap:10px; }
+.brand__name{ font-family:var(--sans); font-weight:650; font-size:19px; letter-spacing:-.015em; white-space:nowrap; }
+.nav__links{ grid-area:links; display:flex; align-items:center; justify-content:center; gap:4px; }
+.nav__cta{ grid-area:cta; justify-self:end; display:flex; align-items:center; gap:10px; }
 .nav__links a:not(.btn){
-  text-decoration:none; color:var(--graphite);
-  font-size:14.5px; font-weight:500;
+  padding:8px 12px; border-radius:var(--radius-sm);
+  text-decoration:none; color:var(--dim);
+  font-size:16px; font-weight:500; line-height:1.25; white-space:nowrap;
+  transition:color .15s ease;
 }
 .nav__links a:not(.btn):hover{ color:var(--ink); }
 
 /* ---------- hero ---------- */
+.hero{ border-bottom:1px solid var(--line); overflow:hidden; }
+/* Text takes the room; the visual is a fixed 420px pinned to the right
+   edge, so both columns meet the same 64px inset as the nav above. */
 .hero__grid{
-  display:grid; grid-template-columns:1.02fr 0.98fr; gap:56px;
-  align-items:center; padding-top:66px; padding-bottom:44px;
+  display:grid; grid-template-columns:minmax(0,1fr) 420px; gap:clamp(48px,6vw,96px);
+  align-items:center; padding-top:96px; padding-bottom:72px;
 }
+/* The status line over the headline: a quiet outlined tag in the
+   console's chip material (white, light edge, a contact shadow), with
+   the words in ink-grey. It reports a status, so it should not shout. */
 .badge{
-  display:inline-flex; align-items:center; gap:9px;
-  font-family:var(--body); font-weight:600; font-size:11.5px;
-  letter-spacing:0.12em; text-transform:uppercase;
-  color:var(--flame-deep);
-  background:rgba(58,114,212,0.09);
-  border:1px solid rgba(58,114,212,0.26);
-  padding:7px 14px; border-radius:999px;
+  display:inline-flex; align-items:center;
+  min-height:32px; padding:5px 14px;
+  font-family:var(--sans); font-weight:500; font-size:14px; line-height:1.3;
+  letter-spacing:.005em; text-transform:none;
+  color:var(--dim);
+  background:linear-gradient(180deg,#ffffff,#fafbfc);
+  border:1px solid var(--outline);
+  border-radius:var(--radius-pill);
+  box-shadow:0 1px 2px rgba(16,24,40,.05);
 }
-.pilot{ width:7px; height:7px; border-radius:50%; background:#2E7D50; box-shadow:0 0 0 4px rgba(46,125,80,0.16); flex:0 0 auto; }
-.hero h1{ margin-top:22px; }
-.hero .lede{ max-width:520px; margin:22px 0 0; }
-.hero__cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.hero h1{ margin-top:26px; }
+.hero .lede{ max-width:600px; margin:26px 0 0; font-size:19px; line-height:1.6; text-wrap:pretty; }
+.hero__cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:36px; }
+.hero__cta .btn{ min-height:50px; padding:13px 24px; font-size:16px; }
 .hero__note{
-  display:flex; align-items:center; gap:10px; margin-top:26px;
-  font-family:var(--body); font-weight:500; font-size:12px; letter-spacing:0.08em;
-  text-transform:uppercase; color:var(--muted);
+  display:flex; align-items:center; gap:10px; margin-top:28px;
+  font-family:var(--sans); font-weight:400; font-size:14px; letter-spacing:0;
+  text-transform:none; color:var(--faint);
 }
-.hero__note .rule{ width:26px; height:1px; background:var(--line); flex:0 0 auto; }
+.hero__note a{ text-decoration:none; }
+.hero__note a:hover{ color:var(--ink); }
+.hero__note .rule{ width:24px; height:1px; background:var(--outline-strong); flex:0 0 auto; }
 
 /* ---------- the signature: data plate in a viewfinder ---------- */
-.rig{ position:relative; display:flex; flex-direction:column; align-items:center; }
+.rig{ position:relative; display:flex; flex-direction:column; align-items:center; isolation:isolate; }
+/* A soft wash of the accent behind the visual: depth without a surface. */
+.rig::before{
+  content:""; position:absolute; z-index:-1; pointer-events:none;
+  left:50%; top:46%; width:150%; aspect-ratio:1; transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side, rgba(58,114,212,.13), rgba(58,114,212,.05) 55%, rgba(58,114,212,0));
+}
 
 .finder{
-  position:relative; width:100%; max-width:400px;
-  padding:26px; border-radius:16px;
+  position:relative; width:100%; max-width:420px;
+  padding:26px; border-radius:var(--radius-lg);
+  background:var(--tile);
 }
-/* Nellie walks in over the viewfinder's top-right corner. Decorative, so
-   no alt; she sits outside the plate so the plate stays legible. */
+/* Nellie straddles the plate's right edge: half on its open space (right
+   of the Model / Serial / Cap. values), half out on the section. Her
+   centre sits on the plate edge, 26px in from the finder (its padding),
+   so right = 26px - width/2. Decorative. */
 .rig__nellie{
-  position:absolute; z-index:2; top:-62px; right:-22px;
-  width:116px; height:auto; pointer-events:none;
-  filter:drop-shadow(0 6px 10px rgba(42,35,30,.14));
+  position:absolute; z-index:2; top:94px; right:-34px;
+  width:120px; height:auto; pointer-events:none;
+  filter:drop-shadow(0 6px 10px rgba(16,24,40,.12));
 }
-/* camera viewfinder corner brackets */
-.finder__corner{ position:absolute; width:26px; height:26px; border:2px solid var(--nellie); }
-.finder__corner--tl{ top:0; left:0; border-right:0; border-bottom:0; border-radius:6px 0 0 0; }
-.finder__corner--tr{ top:0; right:0; border-left:0; border-bottom:0; border-radius:0 6px 0 0; }
-.finder__corner--bl{ bottom:0; left:0; border-right:0; border-top:0; border-radius:0 0 0 6px; }
-.finder__corner--br{ bottom:0; right:0; border-left:0; border-top:0; border-radius:0 0 6px 0; }
-/* The scan box is inset to exactly the plate's bounds — .finder's height is
-   26px + plate + 26px — so translateY(100%) travels precisely one plate
-   height. Percentage translate is relative to the element's own box, which
-   means the animation tracks the plate through font loads and reflows with
-   no JS to keep it in sync. The line itself rides on ::before. */
+.finder__corner{ position:absolute; width:24px; height:24px; border:2px solid var(--accent); }
+.finder__corner--tl{ top:0; left:0; border-right:0; border-bottom:0; border-radius:var(--radius-lg) 0 0 0; }
+.finder__corner--tr{ top:0; right:0; border-left:0; border-bottom:0; border-radius:0 var(--radius-lg) 0 0; }
+.finder__corner--bl{ bottom:0; left:0; border-right:0; border-top:0; border-radius:0 0 0 var(--radius-lg); }
+.finder__corner--br{ bottom:0; right:0; border-left:0; border-top:0; border-radius:0 0 var(--radius-lg) 0; }
+/* The scan box is inset to exactly the plate's bounds, so translateY(100%)
+   travels precisely one plate height with no JS keeping it in sync. */
 .finder__scan{
   position:absolute; inset:26px; pointer-events:none;
   animation:scan 4.2s cubic-bezier(.45,0,.55,1) infinite;
 }
 .finder__scan::before{
   content:""; position:absolute; top:0; left:0; right:0; height:2px;
-  background:linear-gradient(90deg,transparent,var(--nellie),transparent);
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
   border-radius:2px;
 }
 @keyframes scan{
   0%,8%   { transform:translateY(0); opacity:0; }
-  14%     { opacity:.75; }
-  86%     { opacity:.75; }
+  14%     { opacity:.7; }
+  86%     { opacity:.7; }
   92%,100%{ transform:translateY(100%); opacity:0; }
 }
 
-/* brushed stainless nameplate */
+/* brushed stainless nameplate, in cool neutral steel */
 .plate{
   position:relative;
-  margin:0;                 /* <figure> ships with 40px side margins */
+  margin:0;
   border-radius:9px;
   padding:16px 18px 14px;
-  color:#3A322C;
+  color:#344054;
   background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,.45) 0 1px, rgba(60,40,20,.025) 1px 3px),
-    linear-gradient(158deg,#F4F1EC 0%,#D6D1CA 38%,#E8E4DE 55%,#C0BAB2 100%);
-  border:1px solid #A69F96;
+    repeating-linear-gradient(90deg, rgba(255,255,255,.45) 0 1px, rgba(16,24,40,.025) 1px 3px),
+    linear-gradient(158deg,#f4f5f7 0%,#d3d7dd 38%,#e7e9ed 55%,#bcc2ca 100%);
+  border:1px solid #a3abb6;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.85),
-    inset 0 -1px 0 rgba(0,0,0,.12),
-    0 14px 30px rgba(42,35,30,.15);
+    inset 0 -1px 0 rgba(0,0,0,.1),
+    0 12px 28px -8px rgba(16,24,40,.22);
 }
 .plate__head{
   display:flex; align-items:baseline; justify-content:space-between; gap:12px;
   padding-bottom:10px; margin-bottom:11px;
-  border-bottom:1px solid rgba(0,0,0,.16);
+  border-bottom:1px solid rgba(0,0,0,.14);
   box-shadow:0 1px 0 rgba(255,255,255,.6);
 }
 .plate__mfg{
-  font-family:var(--display); font-weight:700;
-  font-size:19px; letter-spacing:0.04em; text-transform:uppercase;
-  color:#2C2621; text-shadow:0 1px 0 rgba(255,255,255,.7);
+  font-family:var(--sans); font-weight:800;
+  font-size:18px; letter-spacing:.06em; text-transform:uppercase;
+  color:#1d2939; text-shadow:0 1px 0 rgba(255,255,255,.7);
 }
-.plate__mark{ font-family:var(--mono); font-size:9.5px; letter-spacing:0.12em; color:#6A625A; text-transform:uppercase; }
+.plate__mark{ font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; color:#5d6676; text-transform:uppercase; }
 .plate__rows{ display:grid; grid-template-columns:auto 1fr; gap:6px 16px; }
 .plate__k{
-  font-family:var(--mono); font-size:9.5px; font-weight:500; letter-spacing:0.14em;
-  text-transform:uppercase; color:#766D64; align-self:center;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:#5d6676; align-self:center;
   text-shadow:0 1px 0 rgba(255,255,255,.6);
 }
 .plate__v{
-  font-family:var(--mono); font-size:12px; font-weight:600; letter-spacing:0.02em;
-  color:#2C2621; text-shadow:0 1px 0 rgba(255,255,255,.7);
+  font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.02em;
+  color:#1d2939; text-shadow:0 1px 0 rgba(255,255,255,.7);
 }
 .rivet{
   position:absolute; width:7px; height:7px; border-radius:50%;
-  background:radial-gradient(circle at 32% 30%, #FDFCFA, #A19A91 62%, #766F67);
-  box-shadow:0 1px 1px rgba(0,0,0,.3);
+  background:radial-gradient(circle at 32% 30%, #fcfcfd, #98a2b3 62%, #667085);
+  box-shadow:0 1px 1px rgba(0,0,0,.28);
 }
 .rivet--tl{ top:7px; left:7px; } .rivet--tr{ top:7px; right:7px; }
 .rivet--bl{ bottom:7px; left:7px; } .rivet--br{ bottom:7px; right:7px; }
 
-/* the answer the plate produces */
+/* the answer the plate produces: the console's ask/answer pane */
 .rig__link{
-  width:2px; height:26px; margin:2px 0;
-  background:linear-gradient(180deg,var(--nellie),rgba(111,168,232,0));
+  width:2px; height:24px; margin:4px 0;
+  background:linear-gradient(180deg,var(--accent),rgba(58,114,212,0));
 }
 .answer{
-  width:100%; max-width:400px;
-  background:var(--panel); border:1px solid var(--line);
-  border-radius:16px; padding:18px 20px 16px;
-  box-shadow:0 12px 30px rgba(42,35,30,.09);
+  width:100%; max-width:420px;
+  background:var(--panel); border:1px solid var(--outline-strong);
+  border-radius:var(--radius-lg); padding:20px 22px 18px;
+  box-shadow:var(--shadow-float);
 }
 .answer__q{
-  font-family:var(--display); font-weight:600;
-  font-size:16px; letter-spacing:-0.005em; color:var(--ink); margin:0;
+  font-family:var(--sans); font-weight:600;
+  font-size:16px; letter-spacing:-.01em; line-height:1.4; color:var(--ink); margin:0;
 }
-.answer__a{ font-size:14.5px; line-height:1.55; color:var(--graphite); margin:9px 0 0; }
+.answer__a{ font-size:15px; line-height:1.6; color:var(--dim); margin:8px 0 0; }
+/* Citation chip, as the console draws .cite: white pill, light edge. */
 .cite{
-  display:inline-flex; align-items:center; gap:7px; margin-top:13px;
-  font-family:var(--body); font-weight:600; font-size:10.5px; letter-spacing:0.09em; text-transform:uppercase;
-  color:var(--flame-deep); background:rgba(58,114,212,0.09);
-  border:1px solid rgba(58,114,212,0.24); padding:5px 10px; border-radius:8px;
+  display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+  font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:0; text-transform:none;
+  color:var(--accent-text); background:var(--panel);
+  border:1px solid var(--outline); padding:4px 12px; border-radius:var(--radius-pill);
 }
 
-/* ---------- spec strip (stats, as plate fields) ---------- */
-.spec{ padding-bottom:16px; }
+/* ---------- spec strip: the console's KPI tiles ---------- */
+.spec{ padding-bottom:64px; }
 .spec__grid{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
-  background:var(--line); border:1px solid var(--line);
-  border-radius:16px; overflow:hidden;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
 }
-/* Cells stretch to the tallest label, so the numbers stay on one baseline
-   even when a caption wraps. */
-.spec__cell{ background:var(--porcelain); padding:22px 20px; display:flex; flex-direction:column; }
-.spec__k{ font-family:var(--body); font-weight:600; font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); }
+.spec__cell{
+  background:var(--tile); border-radius:14px; padding:20px 22px;
+  display:flex; flex-direction:column;
+}
+.spec__k{ font-family:var(--sans); font-weight:500; font-size:15px; letter-spacing:0; text-transform:none; color:var(--dim); line-height:1.3; }
 .spec__v{
-  font-family:var(--display); font-weight:700;
-  font-size:36px; line-height:1; letter-spacing:-0.02em; margin-top:auto; padding-top:9px;
+  font-family:var(--sans); font-weight:700; font-variant-numeric:tabular-nums;
+  font-size:38px; line-height:1.1; letter-spacing:-.025em; margin-top:auto; padding-top:10px; color:var(--ink);
 }
 .spec__foot{
-  margin:14px 2px 0; font-family:var(--body); font-size:13px;
-  letter-spacing:0.01em; color:var(--muted); line-height:1.6;
+  margin:16px 2px 0; font-family:var(--sans); font-size:13px;
+  letter-spacing:0; color:var(--faint); line-height:1.6;
 }
 
 /* ---------- band helpers ---------- */
-.band{ padding-top:78px; padding-bottom:78px; }
-.band--sunk{ background:var(--porcelain-deep); border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft); }
-.band--dark{ background:var(--ink); color:var(--on-dark); }
-.band__head{ max-width:660px; }
-.band__head h2{ margin-top:13px; }
+.band{ padding-top:88px; padding-bottom:88px; }
+/* Every band is the console's light working surface. "Sunk" is the
+   faintest grey, and the dark band reads as one more light band: the
+   console has no dark surfaces. */
+.band--sunk{ background:var(--sunk); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.band--dark{ background:var(--bg); color:var(--ink); }
+.band__head{ max-width:680px; }
+.band__head h2{ margin-top:10px; }
 .band__head .copy{ margin:16px 0 0; }
-.band--dark .band__head .copy{ color:var(--on-dark-mid); }
-.band--dark .stencil--lead{ color:var(--flame-hot); }
+
+/* ---------- panes (console .card) ---------- */
+.way,.feat,.script,.tasks{
+  background:var(--panel); border:1px solid var(--outline);
+  border-radius:var(--radius-lg); box-shadow:none;
+}
 
 /* ---------- two ways in ---------- */
-.ways{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:44px; }
-.way{
-  background:var(--panel); border:1px solid var(--line);
-  border-radius:22px; padding:28px; box-shadow:0 1px 2px rgba(42,35,30,.05),0 8px 24px rgba(42,35,30,.04);
-}
-.way__tag{ display:inline-flex; align-items:center; gap:8px; color:var(--flame-text); }
-.way__tag .dot{ width:7px; height:7px; border-radius:50%; background:currentColor; }
-.way h3{ margin-top:14px; font-size:24px; }
-.way .copy{ margin:11px 0 0; }
-.way__demo{ margin-top:22px; border-top:1px dashed var(--line); padding-top:18px; }
+.ways{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:44px; }
+.way{ padding:28px; }
+.way__tag{ display:inline-flex; align-items:center; gap:8px; color:var(--accent-text); font-weight:600; }
+.way__tag .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); }
+.way h3{ margin-top:12px; font-size:22px; font-weight:700; letter-spacing:-.02em; }
+.way .copy{ margin:10px 0 0; font-size:15px; }
+.way__demo{ margin-top:24px; border-top:1px solid var(--line); padding-top:22px; }
+/* The Today ask box. */
 .ask{
-  display:flex; align-items:center; gap:11px;
-  background:var(--porcelain); border:1px solid var(--line);
-  border-radius:999px; padding:11px 16px;
-  font-size:14.5px; color:var(--ink);
+  display:flex; align-items:center; gap:12px; min-height:56px;
+  background:var(--panel); border:1px solid var(--outline-strong);
+  border-radius:var(--radius-lg); padding:12px 18px;
+  box-shadow:var(--shadow-float);
+  font-size:16px; color:var(--ink);
 }
-.ask__caret{ width:2px; height:15px; background:var(--flame-text); flex:0 0 auto; animation:blink 1.1s steps(1) infinite; }
+.ask__caret{ width:2px; height:18px; background:var(--accent-text); flex:0 0 auto; animation:blink 1.1s steps(1) infinite; }
 @keyframes blink{ 50%{ opacity:0; } }
-.ask__list{ list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:9px; }
-.ask__list li{ font-size:14px; color:var(--graphite); padding-left:18px; position:relative; }
-.ask__list li::before{ content:""; position:absolute; left:0; top:9px; width:8px; height:1px; background:var(--muted); }
+.ask__list{ list-style:none; margin:18px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; }
+.ask__list li{ font-size:15px; color:var(--dim); padding-left:26px; position:relative; line-height:1.5; }
+.ask__list li::before{
+  content:""; position:absolute; left:2px; top:5px; width:6px; height:10px;
+  border-right:2px solid var(--ok); border-bottom:2px solid var(--ok);
+  transform:rotate(45deg);
+}
+/* Numbered steps, as the console's .step .n. */
 .steps{ list-style:none; margin:0; padding:0; counter-reset:step; }
 .steps li{
-  counter-increment:step; position:relative; padding-left:38px;
-  font-size:14.5px; color:var(--graphite); line-height:1.5;
+  counter-increment:step; position:relative; padding-left:42px;
+  font-size:15px; color:var(--dim); line-height:1.55;
 }
-.steps li + li{ margin-top:14px; }
+.steps li + li{ margin-top:16px; }
 .steps li::before{
-  content:counter(step,decimal-leading-zero);
-  position:absolute; left:0; top:1px;
-  font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.06em;
-  color:var(--flame-text); border:1px solid rgba(58,114,212,0.32);
-  border-radius:6px; padding:2px 5px;
+  content:counter(step);
+  position:absolute; left:0; top:-1px;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:26px; height:26px;
+  font-family:var(--sans); font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;
+  color:var(--accent-text); background:var(--accent-soft);
+  border-radius:var(--radius-pill);
 }
 
 /* ---------- feature grid ---------- */
-.feats{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:42px; }
-.feat{
-  background:var(--panel); border:1px solid var(--line);
-  border-radius:20px; padding:26px; box-shadow:0 1px 2px rgba(42,35,30,.05),0 8px 24px rgba(42,35,30,.04);
-}
-.feat .stencil{ color:var(--flame-text); }
-.feat h3{ margin:12px 0 8px; }
-.feat p{ margin:0; font-size:14.5px; line-height:1.55; color:var(--graphite); }
-.feat--amber .stencil{ color:var(--sodium); }
-.feat--amber{ border-color:rgba(168,106,16,0.32); background:linear-gradient(180deg,#FCF4E4,#F8EFDD); }
+.feats{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:44px; }
+.feat{ padding:24px; }
+.feat .stencil{ font-size:14px; font-weight:600; color:var(--accent-text); }
+.feat h3{ margin:8px 0 8px; }
+.feat p{ margin:0; font-size:15px; line-height:1.6; color:var(--dim); }
+/* The safety card is picked out in a transparent wash of the accent
+   blue, with a matching edge, so it stands apart from its neighbours
+   without borrowing a status colour. */
+.feat--amber{ background:rgba(58,114,212,.07); border-color:rgba(58,114,212,.22); }
+.feat--amber .stencil{ color:var(--accent-text); }
 
 /* ---------- maintenance ---------- */
-.maint{ display:grid; grid-template-columns:1.02fr 0.98fr; gap:52px; align-items:start; margin-top:40px; }
-.maint .steps{ margin-top:6px; }
+.maint{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; margin-top:44px; }
+.maint .steps{ margin-top:4px; }
 
-/* The task card mirrors the hero's answer card: same panel, same citation
-   treatment, so "what it answers" and "what it schedules" read as one system. */
-.tasks{
-  background:var(--panel); border:1px solid var(--line);
-  border-radius:20px; overflow:hidden;
-  box-shadow:0 14px 34px rgba(42,35,30,0.09);
-}
+/* The task card is a Today list pane: heading row, rows on hairlines
+   that run edge to edge, status as a tone pill. */
+.tasks{ overflow:hidden; box-shadow:var(--shadow-float); }
 .tasks__head{
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  padding:15px 20px; background:var(--porcelain);
-  border-bottom:1px solid var(--line);
+  display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+  padding:20px 24px 14px; background:var(--panel);
 }
 .tasks__title{
-  font-family:var(--display); font-weight:700;
-  font-size:16px; letter-spacing:-0.005em;
+  font-family:var(--sans); font-weight:600;
+  font-size:16px; letter-spacing:-.01em;
 }
-.bucket{ padding:14px 20px 2px; color:var(--muted); }
-.task{ display:flex; gap:13px; align-items:flex-start; padding:10px 20px 12px; }
-.task__dot{ width:8px; height:8px; border-radius:50%; margin-top:6px; flex:0 0 auto; background:var(--muted); }
-.task__dot--over{ background:var(--sodium-hot); box-shadow:0 0 0 3px rgba(232,169,60,0.22); }
-.task__dot--now{ background:var(--flame); box-shadow:0 0 0 3px rgba(58,114,212,0.18); }
+.tasks__head .stencil{ font-size:13px; }
+.bucket{
+  padding:10px 24px; background:var(--sunk); color:var(--dim);
+  border-top:1px solid var(--line); font-size:13px; font-weight:600;
+}
+.task{
+  display:flex; gap:12px; align-items:center; min-height:64px;
+  padding:14px 24px; border-top:1px solid var(--line);
+}
+.task__dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; background:var(--outline-strong-hover); }
+.task__dot--over{ background:var(--tone-overdue-ink); }
+.task__dot--now{ background:var(--tone-today-ink); }
 .task__body{ display:block; flex:1; min-width:0; }
-.task__what{ display:block; font-size:14.5px; font-weight:500; color:var(--ink); line-height:1.35; }
+.task__what{ display:block; font-size:15px; font-weight:500; color:var(--ink); line-height:1.4; letter-spacing:-.005em; }
 .task__meta{
   display:block;
-  font-family:var(--body); font-weight:500; font-size:11px; letter-spacing:0.06em;
-  text-transform:uppercase; color:var(--muted); margin-top:5px;
+  font-family:var(--sans); font-weight:400; font-size:14px; letter-spacing:0;
+  text-transform:none; color:var(--faint); margin-top:2px; line-height:1.45;
 }
 .task__when{
-  font-family:var(--body); font-weight:600; font-size:11px; letter-spacing:0.06em;
-  text-transform:uppercase; color:var(--muted); flex:0 0 auto; margin-top:3px;
+  font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:0;
+  text-transform:none; color:var(--faint); flex:0 0 auto; white-space:nowrap;
 }
-.task__when--over{ color:var(--sodium); }
+/* #b42318 on #fef3f2 is 6.0:1. */
+.task__when--over{
+  padding:3px 10px; border-radius:var(--radius-pill);
+  background:var(--tone-overdue-bg); color:var(--tone-overdue-ink); font-weight:600;
+}
 
-/* Honest-roadmap strip. Amber, because it belongs to the maintenance thread. */
+/* Honest-roadmap strip: the console's amber banner. */
 .next{
-  margin-top:36px; background:var(--panel);
-  border:1px solid var(--line); border-left:3px solid var(--sodium);
-  border-radius:0 16px 16px 0; padding:20px 24px;
+  margin-top:40px; background:var(--tone-today-bg);
+  border:1px solid var(--tone-today-line);
+  border-radius:12px; padding:18px 22px;
 }
-.next .stencil{ color:var(--sodium); }
-.next p{ margin:9px 0 0; font-size:14.5px; line-height:1.6; color:var(--graphite); }
+.next .stencil{ font-weight:600; color:#93370d; }
+.next p{ margin:6px 0 0; font-size:15px; line-height:1.6; color:#93370d; }
 
-/* ---------- transcript (dark) ---------- */
-.scripts{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:44px; }
+/* ---------- what it says back ---------- */
+.scripts{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:44px; }
+/* Each card carries its own tone; the tone tints the icon badge, the
+   label and a soft wash across the top, never a stripe down the side. */
 .script{
-  background:#362E28; border:1px solid rgba(255,255,255,0.08);
-  border-radius:20px; padding:24px; display:flex; flex-direction:column;
+  --card-pad:24px;
+  --tone-ink:var(--accent-text); --tone-bg:var(--accent-soft); --tone-line:var(--accent-soft-line); --tone-wash:var(--accent-wash);
+  position:relative; padding:var(--card-pad); display:flex; flex-direction:column;
+  background:linear-gradient(180deg, var(--tone-wash) 0, var(--panel) 140px);
+  box-shadow:var(--shadow-float);
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
-.script__k{ font-family:var(--body); font-weight:600; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--on-dark-dim); }
+.script:hover{
+  transform:translateY(-2px); border-color:var(--outline-strong);
+  box-shadow:0 1px 2px rgba(16,24,40,.04),0 16px 32px -16px rgba(16,24,40,.22);
+}
+.script--stop{ --tone-ink:var(--tone-overdue-ink); --tone-bg:var(--tone-overdue-bg); --tone-line:var(--tone-overdue-line); --tone-wash:#fffbfa; }
+.script--gap{ --tone-ink:var(--dim); --tone-bg:#f2f4f7; --tone-line:var(--outline); --tone-wash:var(--sunk); }
+.script__head{ display:flex; align-items:center; gap:12px; }
+.script__icon{
+  flex:none; display:grid; place-items:center; width:36px; height:36px; border-radius:10px;
+  color:var(--tone-ink); background:var(--tone-bg); border:1px solid var(--tone-line);
+}
+.script__icon svg{ width:18px; height:18px; }
+.script__k{ font-family:var(--sans); font-weight:600; font-size:14px; letter-spacing:-.005em; text-transform:none; color:var(--tone-ink); }
 .script__q{
-  font-family:var(--display); font-weight:600;
-  font-size:18px; letter-spacing:-0.005em; line-height:1.3;
-  color:var(--on-dark); margin:11px 0 0;
+  font-family:var(--sans); font-weight:600;
+  font-size:17px; letter-spacing:-.015em; line-height:1.4;
+  color:var(--ink); margin:20px 0 0;
+  padding:14px 16px; background:var(--panel);
+  border:1px solid var(--outline); border-radius:14px 14px 14px 4px;
+  box-shadow:var(--shadow);
 }
-.script__a{ font-size:14.5px; line-height:1.6; color:var(--on-dark-mid); margin:14px 0 0; }
-.script__foot{ margin-top:auto; padding-top:18px; }
+.script__a{ font-size:15px; line-height:1.65; color:var(--dim); margin:16px 0 24px; }
+/* The foot bleeds to the card edges so its hairline spans the width. */
+.script__foot{
+  margin:auto calc(var(--card-pad) * -1) calc(var(--card-pad) * -1);
+  padding:14px var(--card-pad);
+  border-top:1px solid var(--line);
+}
+/* Chips are the console's tags: sentence case pills, status by tint. */
 .chip{
   display:inline-flex; align-items:center; gap:7px;
-  font-family:var(--body); font-weight:600; font-size:10.5px; letter-spacing:0.09em; text-transform:uppercase;
-  padding:5px 10px; border-radius:8px;
+  font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:0; text-transform:none;
+  padding:3px 12px; border-radius:var(--radius-pill); line-height:1.5;
 }
-.chip--cite{ color:var(--flame-hot); background:rgba(141,186,240,0.1); border:1px solid rgba(141,186,240,0.28); }
-.chip--stop{ color:var(--sodium-hot); background:rgba(232,169,60,0.1); border:1px solid rgba(232,169,60,0.3); }
-.chip--gap{ color:var(--on-dark-mid); background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.14); }
-.script--stop{ border-left:2px solid var(--sodium-hot); }
+.chip--cite{ color:var(--accent-text); background:var(--accent-soft); border:1px solid var(--accent-soft-line); }
+.chip--stop{ color:var(--tone-overdue-ink); background:var(--tone-overdue-bg); border:1px solid var(--tone-overdue-line); }
+.chip--gap{ color:var(--dim); background:#f2f4f7; border:1px solid var(--outline); }
+@media (prefers-reduced-motion:reduce){ .script, .script:hover{ transition:none; transform:none; } }
 .scripts__foot{
-  margin-top:26px; font-family:var(--body); font-size:13px;
-  letter-spacing:0.01em; color:var(--on-dark-dim);
+  margin-top:24px; font-family:var(--sans); font-size:13px;
+  letter-spacing:0; color:var(--faint);
 }
 
-/* ---------- operators ---------- */
+/* ---------- operators: the console's soft accent panel ---------- */
 .ops{
-  background:var(--ink); color:var(--on-dark);
-  border-radius:28px; padding:52px clamp(26px,5vw,60px);
+  background:var(--accent-wash); color:var(--ink);
+  border:1px solid var(--accent-soft-line);
+  border-radius:20px; padding:52px clamp(26px,5vw,60px);
   position:relative; overflow:hidden;
 }
-.ops__glow{
-  position:absolute; top:-90px; right:-60px; width:320px; height:320px; border-radius:50%;
-  background:radial-gradient(circle,rgba(111,168,232,0.34),transparent 68%);
-  pointer-events:none;
+.ops__glow{ display:none; }
+.ops__inner{ position:relative; max-width:740px; }
+.ops .stencil{ font-weight:600; }
+.ops h2{ margin-top:10px; }
+.ops .copy{ color:var(--dim); margin:16px 0 0; max-width:580px; }
+.ops__list{ list-style:none; margin:30px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:14px 32px; max-width:680px; }
+.ops__list li{ display:flex; gap:12px; align-items:flex-start; font-size:15px; line-height:1.5; color:var(--dim); }
+.ops__list b{ color:var(--ink); font-weight:600; }
+.ops__list .tick{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; margin-top:0; border-radius:50%;
+  background:var(--ok-bg); color:var(--ok); font-size:12px; font-weight:700; line-height:1;
+  flex:0 0 auto;
 }
-.ops__inner{ position:relative; max-width:720px; }
-.ops h2{ margin-top:17px; }
-.ops .copy{ color:var(--on-dark-mid); margin:17px 0 0; max-width:560px; }
-.ops__list{ list-style:none; margin:30px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:14px 30px; max-width:640px; }
-.ops__list li{ display:flex; gap:11px; align-items:flex-start; font-size:14.5px; line-height:1.45; color:#DDD3C8; }
-.ops__list b{ color:var(--on-dark); font-weight:600; }
-.ops__list .tick{ color:var(--flame-hot); flex:0 0 auto; line-height:1.45; }
-.ops__cta{ display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin-top:34px; }
-.ops__fine{ font-family:var(--body); font-size:13px; letter-spacing:0.01em; color:var(--on-dark-dim); }
+.ops__cta{ display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:34px; }
+.ops__fine{ font-family:var(--sans); font-size:14px; letter-spacing:0; color:var(--faint); }
 
 /* ---------- founder ---------- */
 .founder{ max-width:760px; margin:0 auto; text-align:center; }
 .founder__quote{
-  font-family:var(--display); font-weight:600;
-  font-size:clamp(25px,3.3vw,34px); line-height:1.25; letter-spacing:-0.012em;
-  margin:24px 0 0;
+  font-family:var(--sans); font-weight:700;
+  font-size:clamp(24px,3vw,32px); line-height:1.3; letter-spacing:-.025em;
+  margin:18px 0 0; color:var(--ink);
 }
-/* The quote is centred; the prose under it is not — centred body copy
-   reads badly at this length. */
-.founder .copy{ max-width:580px; margin:20px auto 0; font-size:16px; text-align:left; }
-.inlineLink{ color:var(--flame-text); font-weight:600; text-decoration:none; border-bottom:1px solid rgba(44,96,196,0.38); }
-.inlineLink:hover{ border-bottom-color:var(--flame-text); }
+/* The quote is centred; the prose under it is not. */
+.founder .copy{ max-width:600px; margin:22px auto 0; text-align:left; }
+.inlineLink{ color:var(--accent-text); font-weight:600; text-decoration:underline; text-decoration-color:rgba(44,96,196,.35); text-underline-offset:3px; }
+.inlineLink:hover{ text-decoration-color:currentColor; }
 
-/* ---------- closing ---------- */
+/* ---------- closing: a flat tile, like the console's figures ---------- */
 .close{
-  background:linear-gradient(180deg,#FFFDF9,#F2EADD);
-  border:1px solid rgba(42,35,30,0.14); border-radius:28px;
-  padding:58px 24px; text-align:center;
+  background:var(--tile);
+  border:0; border-radius:20px;
+  padding:60px 24px; text-align:center;
 }
-.close__nellie{ width:92px; height:auto; margin:0 auto 18px; }
+.close__nellie{ width:88px; height:auto; margin:0 auto 20px; }
 .close h2{ max-width:700px; margin:0 auto; }
-.close .lede{ max-width:520px; margin:17px auto 0; }
-.close__cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:28px; }
+.close .lede{ max-width:540px; margin:16px auto 0; }
+.close__cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:30px; }
 
-/* ---------- footer ---------- */
-.foot{ background:var(--ink-deep); color:var(--on-dark-mid); }
-.foot__row{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:34px; padding-top:54px; }
-.foot__about{ max-width:320px; }
-.foot__about p{ font-size:14px; line-height:1.55; color:var(--on-dark-dim); margin:15px 0 0; }
-.foot__cols{ display:flex; gap:56px; flex-wrap:wrap; }
-.foot__col{ display:flex; flex-direction:column; gap:11px; }
-.foot__col .stencil{ color:var(--on-dark-dim); }
-.foot__col a{ text-decoration:none; color:#CFC5BA; font-size:14px; }
-.foot__col a:hover{ color:var(--on-dark); }
+/* ---------- footer: light, on a hairline ---------- */
+.foot{ background:var(--bg); color:var(--dim); border-top:1px solid var(--line); }
+.foot__row{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:36px; padding-top:56px; }
+.foot__about{ max-width:340px; }
+.foot__about p{ font-size:14px; line-height:1.6; color:var(--faint); margin:14px 0 0; }
+.foot__cols{ display:flex; gap:64px; flex-wrap:wrap; }
+.foot__col{ display:flex; flex-direction:column; gap:10px; }
+.foot__col .stencil{ font-size:14px; font-weight:600; color:var(--ink); margin-bottom:2px; }
+.foot__col a{ text-decoration:none; color:var(--dim); font-size:14px; transition:color .15s ease; }
+.foot__col a:hover{ color:var(--ink); }
 .foot__legal{
-  margin-top:42px; padding:20px 0 34px;
-  border-top:1px solid rgba(255,255,255,0.08);
+  margin-top:40px; padding:20px 0 32px;
+  border-top:1px solid var(--line);
   display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px;
-  font-size:13px; color:var(--on-dark-dim);
+  font-size:13px; color:var(--faint);
 }
+.foot__legal .stencil{ font-size:13px; }
 .foot__disclaimer{
-  padding-top:20px; font-size:12.5px; line-height:1.6;
-  color:#8C8178; max-width:720px;
+  padding-top:24px; font-size:13px; line-height:1.6;
+  color:var(--faint); max-width:720px;
 }
-.foot__brand .brand__name{ color:var(--on-dark); }
+.foot__brand .brand__name{ color:var(--ink); }
 
 /* ---------- responsive ---------- */
+/* Too narrow for one row: the destinations take a centred row of their
+   own under the brand and buttons, as the console's tabs do at 1100px. */
+@media (max-width:1100px){
+  .nav__row{ grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"brand cta" "links links"; }
+  .nav__links{ margin-bottom:-6px; }
+  /* The hero stacks here too: beside a 420px visual the text column is
+     too narrow to hold a sentence of the headline on one line. */
+  .hero__grid{ grid-template-columns:1fr; gap:56px; padding-top:64px; padding-bottom:56px; }
+  .hero h1.display{ font-size:clamp(36px,7vw,58px); }
+  .hero .lede{ max-width:640px; font-size:18px; }
+  .rig{ width:100%; max-width:420px; justify-self:start; }
+}
 @media (max-width:940px){
-  .hero__grid{ grid-template-columns:1fr; gap:44px; padding-top:52px; }
-  .hero .lede{ max-width:none; }
   .ways{ grid-template-columns:1fr; }
-  .maint{ grid-template-columns:1fr; gap:38px; }
+  .maint{ grid-template-columns:1fr; gap:40px; }
   .feats{ grid-template-columns:1fr 1fr; }
   .scripts{ grid-template-columns:1fr; }
-  .nav__links a:not(.btn){ display:none; }
+  .nav__links{ display:none; }
   .foot__row{ flex-direction:column; }
-  .rig__nellie{ width:92px; top:-50px; right:-6px; }
+}
+/* Phones: smaller, so her outer half fits the page gutter and her inner
+   half stays clear of the values column on a 320px screen. */
+@media (max-width:475px){
+  .rig__nellie{ top:98px; right:-14px; width:80px; }
 }
 @media (max-width:640px){
+  :root{ --pad:28px; }
   body{ font-size:16px; }
   .brand__name{ font-size:17px; }
   /* Under 640px the nav has room for one button. Log in is the one a
      returning customer needs; the walkthrough CTA is in the hero. */
   .btn--nav{ display:none; }
-  .band{ padding-top:60px; padding-bottom:60px; }
-  .spec__grid{ grid-template-columns:1fr 1fr; }
+  .band{ padding-top:64px; padding-bottom:64px; }
+  .spec{ padding-bottom:48px; }
+  .spec__grid{ grid-template-columns:1fr 1fr; gap:12px; }
+  .spec__cell{ padding:16px 18px; }
   .spec__v{ font-size:30px; }
   .feats{ grid-template-columns:1fr; }
   .ops__list{ grid-template-columns:1fr; }
-  .ops{ padding:40px 24px; }
-  .foot__cols{ gap:34px; }
+  .ops{ padding:36px 22px; }
+  .way,.feat{ padding:22px; }
+  .script{ --card-pad:22px; }
+  .tasks__head,.bucket,.task{ padding-left:18px; padding-right:18px; }
+  .foot__cols{ gap:36px; }
 }
 @media (max-width:430px){
-  :root{ --pad:20px; }
   .nav__row{ gap:12px; }
-  .brand{ gap:9px; }
-  .brand__name{ font-size:15px; white-space:nowrap; }
-  .btn--login{ padding:8px 14px; font-size:13px; }
+  .brand{ gap:10px; }
+  .brand__name{ font-size:16px; }
+  .btn--login{ padding:8px 14px; font-size:14px; }
+  .hero__cta .btn{ flex:1 1 100%; }
+  .spec__k{ font-size:14px; }
+  .spec__v{ font-size:28px; }
 }
 @media (max-width:360px){
   /* Below this the wordmark and the CTA can't both fit; the mark carries it. */
@@ -581,11 +707,11 @@ strong{ color:var(--ink); font-weight:600; }
       <a href="#inside">What's inside</a>
       <a href="#maintenance">Maintenance</a>
       <a href="#operators">For operators</a>
-      <span class="nav__cta">
-        <a class="btn btn--nav" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">Book a walkthrough</a>
-        <a class="btn btn--login" href="https://app.smartkitchendocs.com">Log in</a>
-      </span>
     </nav>
+    <span class="nav__cta">
+      <a class="btn btn--nav" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">Book a Demo</a>
+      <a class="btn btn--login" href="https://app.smartkitchendocs.com">Log in</a>
+    </span>
   </div>
 </header>
 
@@ -593,14 +719,14 @@ strong{ color:var(--ink); font-weight:600; }
 <section id="top" class="hero">
   <div class="shell hero__grid">
     <div>
-      <span class="badge"><span class="pilot" aria-hidden="true"></span>Pilot kitchens onboarding now</span>
-      <h1 class="display">The manual is 240 pages. The answer is one line.</h1>
+      <span class="badge">Pilot kitchens onboarding now</span>
+      <h1 class="display"><span class="h1__line">The manual is 240 pages.</span> <span class="h1__line">The answer is one line.</span></h1>
       <p class="lede">
-        Smart Kitchen Docs reads the manufacturer manuals for every unit in your kitchen — the mixer, the rack oven, the walk-in, the espresso machine — and answers plain questions with <strong>the page it came from</strong>. Photograph a data plate to add a unit. Nothing is invented; everything is cited.
+        Smart Kitchen Docs reads the manufacturer manuals for every unit in your kitchen (the mixer, the rack oven, the walk-in, the espresso machine) and answers plain questions with <strong>the page it came from</strong>. Photograph a data plate to add a unit. Nothing is invented; everything is cited.
       </p>
       <div class="hero__cta">
         <a class="btn btn--primary" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">
-          Book a walkthrough <span aria-hidden="true">→</span>
+          Book a Demo <span aria-hidden="true">→</span>
         </a>
         <a class="btn btn--ghost" href="#how">See how it works</a>
       </div>
@@ -644,7 +770,7 @@ strong{ color:var(--ink); font-weight:600; }
 
       <div class="answer">
         <p class="answer__q">“How often does the bowl lift need greasing?”</p>
-        <p class="answer__a">Lubricate the bowl-lift slides and the lift screw every six months with Hobart Lithium Grease. Wipe the old grease off the slideways first — build-up is what makes the bowl bind on the way up.</p>
+        <p class="answer__a">Lubricate the bowl-lift slides and the lift screw every six months with Hobart Lithium Grease. Wipe the old grease off the slideways first. Build-up is what makes the bowl bind on the way up.</p>
         <span class="cite">
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 1.2h4L9.4 3.6V10.8H3V1.2Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M6.6 1.4v2.4h2.6" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>
           Service manual · p. 24
@@ -673,7 +799,7 @@ strong{ color:var(--ink); font-weight:600; }
         <div class="spec__v">100%</div>
       </div>
     </div>
-    <p class="spec__foot">Citation accuracy checked page-by-page against the source PDFs in a 150-task audit — zero fabricated facts.</p>
+    <p class="spec__foot">Citation accuracy checked page-by-page against the source PDFs in a 150-task audit: zero fabricated facts.</p>
   </div>
 </section>
 
@@ -690,7 +816,7 @@ strong{ color:var(--ink); font-weight:600; }
       <div class="way">
         <span class="way__tag stencil"><span class="dot" aria-hidden="true"></span>Ask anything</span>
         <h3 class="display">Type the question the way you'd say it</h3>
-        <p class="copy">No model numbers, no menu trees. The app works out which unit you mean, pulls the relevant pages, and answers in the words a cook would use — with a citation you can tap to see the page it came from.</p>
+        <p class="copy">No model numbers, no menu trees. The app works out which unit you mean, pulls the relevant pages, and answers in the words a cook would use, with a citation you can tap to see the page it came from.</p>
         <div class="way__demo">
           <div class="ask"><span class="ask__caret" aria-hidden="true"></span>why is the walk-in icing up on the back wall</div>
           <ul class="ask__list">
@@ -704,10 +830,10 @@ strong{ color:var(--ink); font-weight:600; }
       <div class="way">
         <span class="way__tag stencil"><span class="dot" aria-hidden="true"></span>Identify by plate</span>
         <h3 class="display">Photograph the nameplate, get the docs</h3>
-        <p class="copy">Every commercial unit carries a stamped plate with the make, model and serial. Point the camera at it and the app reads it, matches the equipment, and pulls in its manuals — which is also how a new kitchen gets inventoried in an afternoon.</p>
+        <p class="copy">Every commercial unit carries a stamped plate with the make, model and serial. Point the camera at it and the app reads it, matches the equipment, and pulls in its manuals, which is also how a new kitchen gets inventoried in an afternoon.</p>
         <div class="way__demo">
           <ol class="steps">
-            <li>Find the plate — the app has location hints per unit type, because half of them are behind the bottom grill.</li>
+            <li>Find the plate. The app has location hints per unit type, because half of them are behind the bottom grill.</li>
             <li>Take the photo. Make, model and serial come off the plate.</li>
             <li>The unit joins your kitchen with its manuals attached.</li>
           </ol>
@@ -734,7 +860,7 @@ strong{ color:var(--ink); font-weight:600; }
       <div class="feat">
         <div class="stencil">Your kitchen</div>
         <h3 class="display">Only the units you actually own</h3>
-        <p>The home screen is your equipment — your fryer, your mixer, your model of walk-in. No catalogue to wade through, no results for a machine three kitchens over.</p>
+        <p>The home screen is your equipment: your fryer, your mixer, your model of walk-in. No catalogue to wade through, no results for a machine three kitchens over.</p>
       </div>
       <div class="feat">
         <div class="stencil">Every document</div>
@@ -766,28 +892,37 @@ strong{ color:var(--ink); font-weight:600; }
     <div class="band__head">
       <div class="stencil stencil--lead">What it says back</div>
       <h2 class="display">Three questions, three different jobs.</h2>
-      <p class="copy">Answering is only one of them. Knowing when to stop, and admitting what isn't there, are the other two — and they're the reason a kitchen can trust the first one.</p>
+      <p class="copy">Answering is only one of them. Knowing when to stop, and admitting what isn't there, are the other two, and they're the reason a kitchen can trust the first one.</p>
     </div>
 
     <div class="scripts">
-      <article class="script">
-        <div class="script__k">Answers it</div>
+      <article class="script script--answer">
+        <div class="script__head">
+          <span class="script__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4H9a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5h-6A1.5 1.5 0 0 1 2 16z"/><path d="M22 5.5A1.5 1.5 0 0 0 20.5 4H15a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5h6a1.5 1.5 0 0 0 1.5-1.5z"/></svg></span>
+          <div class="script__k">Answers it</div>
+        </div>
         <p class="script__q">“How do I change the water filter on the Bunn?”</p>
         <p class="script__a">Walks through the steps in order, in the manual's own sequence, with the interval the manufacturer specifies. The citation opens the page so the cook can check it against what's in front of them.</p>
         <div class="script__foot"><span class="chip chip--cite">Operator manual · p. 12</span></div>
       </article>
 
       <article class="script script--stop">
-        <div class="script__k">Stops short</div>
-        <p class="script__q">“The rack oven won't light — can I check the igniter?”</p>
+        <div class="script__head">
+          <span class="script__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 6.5v5.2c0 4.6 3.8 8.3 9 9.3 5.2-1 9-4.7 9-9.3V6.5z"/><path d="M12 8.5v4"/><path d="M12 16h.01"/></svg></span>
+          <div class="script__k">Stops short</div>
+        </div>
+        <p class="script__q">“The rack oven won't light. Can I check the igniter?”</p>
         <p class="script__a">Gas, refrigerant and line voltage get the same treatment: the app gives you what the manual says about the symptom, then tells you plainly that this one goes to a certified technician. It doesn't walk a baker into a gas train.</p>
         <div class="script__foot"><span class="chip chip--stop">Call a certified tech</span></div>
       </article>
 
-      <article class="script">
-        <div class="script__k">Admits the gap</div>
+      <article class="script script--gap">
+        <div class="script__head">
+          <span class="script__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/><path d="M9.2 9.3a1.9 1.9 0 0 1 3.6.7c0 1.2-1.8 1.6-1.8 2.6"/><path d="M11 14.6h.01"/></svg></span>
+          <div class="script__k">Admits the gap</div>
+        </div>
         <p class="script__q">“What descaler does the espresso machine take?”</p>
-        <p class="script__a">Some manuals only move through distributor channels. When one isn't in the library yet, the app says the manual isn't there and links the manufacturer's official resources — rather than producing something that sounds right.</p>
+        <p class="script__a">Some manuals only move through distributor channels. When one isn't in the library yet, the app says the manual isn't there and links the manufacturer's official resources, rather than producing something that sounds right.</p>
         <div class="script__foot"><span class="chip chip--gap">Manual not sourced yet</span></div>
       </article>
     </div>
@@ -808,7 +943,7 @@ strong{ color:var(--ink); font-weight:600; }
     <div class="maint">
       <div>
         <ol class="steps">
-          <li><strong>It reads the intervals out of each manual</strong> — the schedule is extracted from the book, and every item carries the page it was found on.</li>
+          <li><strong>It reads the intervals out of each manual</strong>: the schedule is extracted from the book, and every item carries the page it was found on.</li>
           <li><strong>You review and accept.</strong> Nothing lands on your schedule that you didn't approve, and nothing is proposed that the manual doesn't say.</li>
           <li><strong>Tasks sort themselves</strong> into overdue, today, this week and later, and the phone reminds you when one comes due.</li>
           <li><strong>Mark it done and it reschedules</strong> to the next interval. No spreadsheet, no clipboard, no wall calendar going soft above the sink.</li>
@@ -855,7 +990,7 @@ strong{ color:var(--ink); font-weight:600; }
 
     <div class="next">
       <div class="stencil">Not there yet</div>
-      <p>Calendar sync to Google Calendar and Outlook, and a completion log you could hand a health inspector or use for NFPA 96 hood-cleaning records, are next on the build — they aren't in the app today. Reminders right now are local to the phone, which means they fire whether or not the kitchen's Wi-Fi is up.</p>
+      <p>Calendar sync to Google Calendar and Outlook, and a completion log you could hand a health inspector or use for NFPA 96 hood-cleaning records, are next on the build. They aren't in the app today. Reminders right now are local to the phone, which means they fire whether or not the kitchen's Wi-Fi is up.</p>
     </div>
   </div>
 </section>
@@ -868,18 +1003,18 @@ strong{ color:var(--ink); font-weight:600; }
       <div class="ops__inner">
         <div class="stencil" style="color:var(--flame-hot);">For restaurant operators</div>
         <h2 class="display">One code. The whole crew. Every unit.</h2>
-        <p class="copy">A kitchen gets an access code, and everyone who works there is in — openers, closers, the weekend baker, the new hire on day two. There's no per-seat maths and nobody has to be an administrator to use it.</p>
+        <p class="copy">A kitchen gets an access code, and everyone who works there is in: openers, closers, the weekend baker, the new hire on day two. There's no per-seat maths and nobody has to be an administrator to use it.</p>
 
         <ul class="ops__list">
-          <li><span class="tick" aria-hidden="true">✓</span><span><b>Your equipment, inventoried</b> — on site, off the data plates, by us.</span></li>
+          <li><span class="tick" aria-hidden="true">✓</span><span><b>Your equipment, inventoried</b>: on site, off the data plates, by us.</span></li>
           <li><span class="tick" aria-hidden="true">✓</span><span><b>Manuals sourced for you</b>, including the ones you can't find online.</span></li>
-          <li><span class="tick" aria-hidden="true">✓</span><span><b>Shared access code</b> — no accounts for staff to forget.</span></li>
+          <li><span class="tick" aria-hidden="true">✓</span><span><b>Shared access code</b>: no accounts for staff to forget.</span></li>
           <li><span class="tick" aria-hidden="true">✓</span><span><b>Maintenance schedules</b> proposed from each manual and reviewed with you.</span></li>
         </ul>
 
         <div class="ops__cta">
           <a class="btn btn--onDark" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">
-            Book a walkthrough <span aria-hidden="true">→</span>
+            Book a Demo <span aria-hidden="true">→</span>
           </a>
           <span class="ops__fine">Pilot onboarding is done in person · iOS &amp; Android</span>
         </div>
@@ -894,7 +1029,7 @@ strong{ color:var(--ink); font-weight:600; }
     <div class="stencil stencil--lead">Why it exists</div>
     <p class="founder__quote">“The information was never missing. It was just unreadable at the moment anyone needed it.”</p>
     <p class="copy">Smart Kitchen Docs comes from the team behind <a class="inlineLink" href="https://www.smartevguides.com" target="_blank" rel="noreferrer">Smart EV Guides</a>, a tool built by a working firefighter so responders could get manufacturer rescue guidance without digging through a 40-page PDF on scene. A commercial kitchen has the same problem in a different building: the answer exists, in a manual, in a drawer, in a language nobody wants to read at six o'clock.</p>
-    <p class="copy">The rule carried over unchanged — <strong>source-linked, never generated</strong>. If the manual doesn't say it, the app doesn't either.</p>
+    <p class="copy">The rule carried over unchanged: <strong>source-linked, never generated</strong>. If the manual doesn't say it, the app doesn't either.</p>
   </div>
 </section>
 
@@ -906,7 +1041,7 @@ strong{ color:var(--ink); font-weight:600; }
       <h2 class="display">Your kitchen already has the answers. They're in a drawer.</h2>
       <p class="lede">We'll walk your kitchen, inventory the equipment off the plates, source the manuals, and hand your crew something they'll actually open.</p>
       <div class="close__cta">
-        <a class="btn btn--primary" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">Book a walkthrough</a>
+        <a class="btn btn--primary" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">Book a Demo</a>
         <a class="btn btn--ghost" href="mailto:dylan@smartevguides.com?subject=Question%20%E2%80%94%20Smart%20Kitchen%20Docs">Ask a question</a>
       </div>
     </div>
