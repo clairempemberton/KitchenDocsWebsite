@@ -372,7 +372,7 @@ strong{ color:var(--ink); font-weight:600; }
 /* ---------- spec strip: the console's KPI tiles ---------- */
 .spec{ padding-bottom:64px; }
 .spec__grid{
-  display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px;
 }
 .spec__cell{
   background:var(--tile); border-radius:14px; padding:20px 22px;
@@ -413,7 +413,7 @@ strong{ color:var(--ink); font-weight:600; }
 .way{ padding:28px; }
 .way__tag{ display:inline-flex; align-items:center; gap:8px; color:var(--accent-text); font-weight:600; }
 .way__tag .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); }
-.way h3{ margin-top:12px; font-size:22px; font-weight:700; letter-spacing:-.02em; }
+.way h3{ margin-top:12px; font-size:22px; font-weight:700; letter-spacing:-.02em; text-wrap:balance; }
 .way .copy{ margin:10px 0 0; font-size:15px; }
 .way__demo{ margin-top:24px; border-top:1px solid var(--line); padding-top:22px; }
 /* The Today ask box. */
@@ -503,7 +503,7 @@ strong{ color:var(--ink); font-weight:600; }
 .task--now{ --tone-ink:var(--tone-today-ink); }
 .task__bucket{ grid-area:bucket; font-size:14px; font-weight:600; color:var(--tone-ink); }
 .task__what{ grid-area:what; font-size:15px; font-weight:500; color:var(--ink); line-height:1.4; letter-spacing:-.005em; }
-.task__meta{ grid-area:meta; font-size:14px; color:var(--faint); line-height:1.45; }
+.task__meta{ grid-area:meta; font-size:14px; color:var(--faint); line-height:1.45; text-wrap:pretty; }
 .task__when{
   grid-area:when; justify-self:end;
   font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:0; line-height:22px;
@@ -577,7 +577,7 @@ strong{ color:var(--ink); font-weight:600; }
   padding:9px 14px; border-radius:16px 16px 16px 4px;
   font-family:var(--sans); font-weight:500; font-size:14px; letter-spacing:0; line-height:1.4; text-transform:none;
   color:var(--tone-ink); background:var(--panel); border:1px solid var(--tone-line);
-  box-shadow:0 1px 2px rgba(16,24,40,.05);
+  box-shadow:0 1px 2px rgba(16,24,40,.05); text-wrap:balance;
 }
 .chip--cite{ text-decoration:underline; text-decoration-color:var(--accent-soft-line); text-decoration-thickness:1px; text-underline-offset:4px; }
 .script__a{ margin:0; padding:20px 22px 24px; font-size:15px; line-height:1.65; color:var(--dim); text-wrap:pretty; }
@@ -634,7 +634,7 @@ strong{ color:var(--ink); font-weight:600; }
 }
 .ops__cta .btn:hover{ background:var(--accent-soft); border-color:var(--accent-soft); }
 .ops__cta .btn:active{ background:var(--accent-soft-line); border-color:var(--accent-soft-line); }
-.ops__fine{ font-family:var(--sans); font-size:14px; line-height:1.5; letter-spacing:0; color:rgba(255,255,255,.88); }
+.ops__fine{ font-family:var(--sans); font-size:14px; line-height:1.5; letter-spacing:0; color:rgba(255,255,255,.88); text-wrap:balance; }
 
 /* ---------- founder ---------- */
 /* Two bands: the quote alone on grey, then the story and the rule it
@@ -698,6 +698,10 @@ strong{ color:var(--ink); font-weight:600; }
   background:linear-gradient(180deg,#e4e7ec,#d0d5dd);
   box-shadow:inset 0 1px 1px rgba(16,24,40,.12), 0 1px 0 #fff;
 }
+/* iOS Safari only applies :hover on tap to elements it treats as
+   clickable; a pointer cursor is that signal. Touch screens only, so a
+   mouse never sees a "clickable" cursor on something that isn't a link. */
+@media (hover:none){ .close__scene{ cursor:pointer; -webkit-tap-highlight-color:transparent; } }
 .close__scene:hover .close__drawer{ transform:translateY(156px); }
 .close__scene:hover .close__nellie{ transform:translateX(-50%) translateY(-14px); }
 @media (prefers-reduced-motion:reduce){ .close__drawer, .close__nellie{ transition:none; } }
@@ -729,6 +733,11 @@ strong{ color:var(--ink); font-weight:600; }
 /* Too narrow for one row: the destinations take a centred row of their
    own under the brand and buttons, as the console's tabs do at 1100px. */
 @media (max-width:1100px){
+  .task{
+    grid-template-columns:120px minmax(0,1fr) auto;
+    grid-template-areas:"bucket what when" "bucket meta when";
+    row-gap:2px;
+  }
   .nav__row{ grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"brand cta" "links links"; }
   .nav__links{ margin-bottom:-6px; }
   /* The hero stacks here too: beside a 420px visual the text column is
@@ -746,11 +755,6 @@ strong{ color:var(--ink); font-weight:600; }
   .ops__stub{ border-left:0; border-top:2px dashed rgba(255,255,255,.45); flex-direction:row; align-items:flex-end; gap:32px; }
   .ops__dots{ margin-bottom:0; flex:none; align-self:flex-start; }
   .ops__cta{ flex:1; max-width:360px; margin-left:auto; }
-  .task{
-    grid-template-columns:120px minmax(0,1fr) auto;
-    grid-template-areas:"bucket what when" "bucket meta when";
-    row-gap:2px;
-  }
   .maint__steps{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 32px; }
   .feats{ grid-template-columns:1fr 1fr; }
   .scripts{ grid-template-columns:1fr; max-width:600px; }
@@ -776,7 +780,7 @@ strong{ color:var(--ink); font-weight:600; }
   .btn--nav{ display:none; }
   .band{ padding-top:64px; padding-bottom:64px; }
   .spec{ padding-bottom:48px; }
-  .spec__grid{ grid-template-columns:1fr 1fr; gap:12px; }
+  .spec__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
   .spec__cell{ padding:16px 18px; }
   .spec__v{ font-size:30px; }
   .feats{ grid-template-columns:1fr; }
@@ -808,7 +812,45 @@ strong{ color:var(--ink); font-weight:600; }
   .spec__k{ font-size:14px; }
   .spec__v{ font-size:28px; }
 }
+/* ---------- touch and small-screen polish ---------- */
+/* Stats: four equal tiles until "2,200+" no longer fits a quarter of the
+   row, then a 2x2 grid; the smallest phones shrink the figure a step. */
+@media (max-width:860px){ .spec__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:340px){ .spec__cell{ padding:14px; } .spec__v{ font-size:24px; } }
+@media (max-width:300px){ .spec__v{ font-size:20px; } }
+/* Touch screens: every control at least 44px tall (Apple's minimum),
+   footer links padded into real targets. Mouse users keep the tighter
+   desktop sizes. */
+@media (pointer:coarse){
+  .btn--nav,.btn--login{ min-height:44px; }
+  .nav__links a:not(.btn){ display:inline-flex; align-items:center; min-height:44px; }
+  .brand{ min-height:44px; min-width:44px; }
+  /* Grow the tagline link's hit area without moving the line. */
+  .hero__note a{ display:inline-block; padding:11px 0; margin:-11px 0; }
+  .foot__col{ gap:0; }
+  .foot__col .stencil{ margin-bottom:6px; }
+  .foot__col a{ padding:11px 0; }
+}
+/* Phones: the hero note flows as one sentence instead of two columns,
+   the plate's code drops under the maker's name rather than breaking
+   mid-code, and the drawer scene tightens up under the buttons. */
+@media (max-width:480px){
+  .hero__note{ display:block; line-height:1.6; }
+  .hero__note .rule{ display:inline-block; vertical-align:middle; margin-right:10px; }
+  .hero__note a{ white-space:nowrap; }
+  .plate__head{ flex-wrap:wrap; row-gap:4px; }
+  .plate__mark{ white-space:nowrap; }
+}
+@media (max-width:640px){
+  .close__scene{ height:250px; margin-top:24px; }
+  .close__nellie{ width:130px; }
+  .close__drawer{ top:72px; height:190px; }
+  .close__scene:hover .close__drawer{ transform:translateY(150px); }
+}
 @media (max-width:360px){
+  .script__chat{ padding:18px 16px 20px; }
+  .script__a{ padding:18px 16px 20px; }
+  .chip{ font-size:13px; }
   /* Below this the wordmark and the CTA can't both fit; the mark carries it. */
   .brand__name{ display:none; }
 }
