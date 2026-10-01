@@ -75,10 +75,11 @@
   --muted:var(--faint);
   --flame-hot:var(--accent-text);
 
-  /* Edge to edge like the console, a little over twice its inset: 64px either side (28px on a
-     phone), no centred column. */
+  /* Edge to edge like the console: 96px either side, stepping down to
+     80px at 1140px and 64px at 680px so the hero headline keeps two
+     lines, then 32px on a phone. No centred column. */
   --shell:none;
-  --pad:64px;
+  --pad:96px;
 
   --sans:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,sans-serif;
   --mono:"Courier Prime",ui-monospace,Consolas,monospace;
@@ -194,6 +195,16 @@ strong{ color:var(--ink); font-weight:600; }
   align-items:center; gap:12px 28px; padding-top:16px; padding-bottom:16px;
 }
 .nav__row>.brand{ grid-area:brand; justify-self:start; }
+/* The logo hangs out into the left margin so "Smart Kitchen Docs" lines up
+   with the hero text below, and the buttons push out into the right margin
+   by the same amount so the two sides mirror. --brand-hang is the mark's
+   rendered width (30px tall) plus the brand gap. Only where the margin is
+   80px or more; below 681px the nav sits on the plain inset. */
+@media (min-width:681px){
+  .nav__row{ --brand-hang:calc(30px * 528 / 370 + 14px); }
+  .nav__row>.brand{ margin-left:calc(-1 * var(--brand-hang)); }
+  .nav__cta{ margin-right:calc(-1 * var(--brand-hang)); }
+}
 .brand{ display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink); }
 .brand__mark{ height:30px; width:auto; flex:0 0 auto; }
 .brand__name{ font-family:var(--sans); font-weight:650; font-size:19px; letter-spacing:-.015em; white-space:nowrap; }
@@ -210,7 +221,7 @@ strong{ color:var(--ink); font-weight:600; }
 /* ---------- hero ---------- */
 .hero{ border-bottom:1px solid var(--line); overflow:hidden; }
 /* Text takes the room; the visual is a fixed 420px pinned to the right
-   edge, so both columns meet the same 64px inset as the nav above. */
+   edge, so both columns meet the same --pad inset as the nav above. */
 .hero__grid{
   display:grid; grid-template-columns:minmax(0,1fr) 420px; gap:clamp(48px,6vw,96px);
   align-items:center; padding-top:96px; padding-bottom:72px;
@@ -256,13 +267,13 @@ strong{ color:var(--ink); font-weight:600; }
   padding:26px; border-radius:var(--radius-lg);
   background:var(--tile);
 }
-/* Nellie straddles the plate's right edge: half on its open space (right
-   of the Model / Serial / Cap. values), half out on the section. Her
-   centre sits on the plate edge, 26px in from the finder (its padding),
-   so right = 26px - width/2. Decorative. */
+/* Nellie stands on the plate's top edge at its right end. The plate sits
+   26px in from the finder (its padding), so right = 26px + a 12px inset
+   from the plate's corner; top = 26px + 6px foot overlap - her height.
+   Decorative. */
 .rig__nellie{
-  position:absolute; z-index:2; top:94px; right:-34px;
-  width:120px; height:auto; pointer-events:none;
+  position:absolute; z-index:2; top:-46px; right:38px;
+  width:112px; height:auto; pointer-events:none;
   filter:drop-shadow(0 6px 10px rgba(16,24,40,.12));
 }
 .finder__corner{ position:absolute; width:24px; height:24px; border:2px solid var(--accent); }
@@ -384,6 +395,9 @@ strong{ color:var(--ink); font-weight:600; }
    console has no dark surfaces. */
 .band--sunk{ background:var(--sunk); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .band--dark{ background:var(--bg); color:var(--ink); }
+/* A white band that follows another white band: a hairline marks the seam. */
+.band--rule{ background:var(--bg); border-top:1px solid var(--line); }
+.band--sunk + .band--rule{ border-top:0; }
 .band__head{ max-width:680px; }
 .band__head h2{ margin-top:10px; }
 .band__head .copy{ margin:16px 0 0; }
@@ -449,159 +463,244 @@ strong{ color:var(--ink); font-weight:600; }
 .feat--amber .stencil{ color:var(--accent-text); }
 
 /* ---------- maintenance ---------- */
-.maint{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; margin-top:44px; }
-.maint .steps{ margin-top:4px; }
+/* Three tiers: the heading with the roadmap note beside it, the week's
+   tasks as one full-width table, then the four steps as columns. */
+.maint__top{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,320px);
+  gap:40px clamp(48px,8vw,128px); align-items:end;
+}
+.maint__top .band__head{ max-width:640px; }
+.maint__top h2{ text-wrap:balance; }
 
-/* The task card is a Today list pane: heading row, rows on hairlines
-   that run edge to edge, status as a tone pill. */
-.tasks{ overflow:hidden; box-shadow:var(--shadow-float); }
+/* Honest-roadmap note: a quiet aside hung off a hairline, in the
+   console's amber for the label only. */
+.next{ padding-left:24px; border-left:1px solid var(--outline-strong); }
+.next .stencil{
+  font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--tone-today-ink);
+}
+.next p{ margin:8px 0 0; font-size:14px; line-height:1.65; color:var(--faint); }
+
+/* The week's tasks: a console table. Tinted heading row, then one row
+   per task: status, task, source, when. */
+.tasks{ margin-top:56px; overflow:hidden; border-radius:var(--radius-lg); box-shadow:var(--shadow-float); }
 .tasks__head{
   display:flex; align-items:baseline; justify-content:space-between; gap:12px;
-  padding:20px 24px 14px; background:var(--panel);
+  padding:16px 28px; background:var(--tile); border-bottom:1px solid var(--outline);
 }
-.tasks__title{
-  font-family:var(--sans); font-weight:600;
-  font-size:16px; letter-spacing:-.01em;
-}
+.tasks__title{ font-family:var(--sans); font-weight:600; font-size:16px; letter-spacing:-.01em; color:var(--ink); }
 .tasks__head .stencil{ font-size:13px; }
-.bucket{
-  padding:10px 24px; background:var(--sunk); color:var(--dim);
-  border-top:1px solid var(--line); font-size:13px; font-weight:600;
-}
 .task{
-  display:flex; gap:12px; align-items:center; min-height:64px;
-  padding:14px 24px; border-top:1px solid var(--line);
+  --tone-ink:var(--dim);
+  display:grid; grid-template-columns:150px minmax(0,1.3fr) minmax(0,1fr) 80px;
+  grid-template-areas:"bucket what meta when";
+  align-items:center; column-gap:24px;
+  padding:18px 28px; transition:background-color .15s ease;
 }
-.task__dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; background:var(--outline-strong-hover); }
-.task__dot--over{ background:var(--tone-overdue-ink); }
-.task__dot--now{ background:var(--tone-today-ink); }
-.task__body{ display:block; flex:1; min-width:0; }
-.task__what{ display:block; font-size:15px; font-weight:500; color:var(--ink); line-height:1.4; letter-spacing:-.005em; }
-.task__meta{
-  display:block;
-  font-family:var(--sans); font-weight:400; font-size:14px; letter-spacing:0;
-  text-transform:none; color:var(--faint); margin-top:2px; line-height:1.45;
-}
+.task + .task{ border-top:1px solid var(--line); }
+.task:hover{ background:var(--sunk); }
+.task--over{ --tone-ink:var(--tone-overdue-ink); }
+.task--now{ --tone-ink:var(--tone-today-ink); }
+.task__bucket{ grid-area:bucket; font-size:14px; font-weight:600; color:var(--tone-ink); }
+.task__what{ grid-area:what; font-size:15px; font-weight:500; color:var(--ink); line-height:1.4; letter-spacing:-.005em; }
+.task__meta{ grid-area:meta; font-size:14px; color:var(--faint); line-height:1.45; }
 .task__when{
-  font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:0;
-  text-transform:none; color:var(--faint); flex:0 0 auto; white-space:nowrap;
+  grid-area:when; justify-self:end;
+  font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:0; line-height:22px;
+  text-transform:none; color:var(--faint); white-space:nowrap;
 }
 /* #b42318 on #fef3f2 is 6.0:1. */
 .task__when--over{
-  padding:3px 10px; border-radius:var(--radius-pill);
+  padding:0 10px; border-radius:var(--radius-pill);
   background:var(--tone-overdue-bg); color:var(--tone-overdue-ink); font-weight:600;
 }
+@media (prefers-reduced-motion:reduce){ .task{ transition:none; } }
 
-/* Honest-roadmap strip: the console's amber banner. */
-.next{
-  margin-top:40px; background:var(--tone-today-bg);
-  border:1px solid var(--tone-today-line);
-  border-radius:12px; padding:18px 22px;
+/* The four steps as columns, each under a hairline and numbered in a
+   solid circle in the Book a Demo blue, lead phrase on its own line
+   above the rest. */
+.maint__steps{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:32px;
+  list-style:none; margin:56px 0 0; padding:0; counter-reset:mstep;
 }
-.next .stencil{ font-weight:600; color:#93370d; }
-.next p{ margin:6px 0 0; font-size:15px; line-height:1.6; color:#93370d; }
+.maint__steps li{
+  counter-increment:mstep; padding-top:24px; border-top:1px solid var(--outline);
+  font-size:15px; line-height:1.65; color:var(--dim);
+}
+.maint__steps li::before{
+  content:counter(mstep);
+  display:flex; align-items:center; justify-content:center;
+  width:28px; height:28px; margin-bottom:14px;
+  font-family:var(--sans); font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1;
+  color:#fff; background:var(--accent-text);
+  border-radius:var(--radius-pill);
+}
+.maint__steps strong{ display:block; margin-bottom:6px; font-size:16px; font-weight:600; line-height:1.4; letter-spacing:-.01em; color:var(--ink); }
 
 /* ---------- what it says back ---------- */
-.scripts{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:44px; }
-/* Each card carries its own tone; the tone tints the icon badge, the
-   label and a soft wash across the top, never a stripe down the side. */
+.scripts{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:48px; }
+/* Each card is a snapshot of the app: a tinted chat area where the cook
+   asks (blue bubble, right) and Nellie replies with the outcome (white
+   bubble, left), then the explanation on plain white below. Tone shows in
+   the label pill and the reply bubble's ink and edge. */
 .script{
-  --card-pad:24px;
-  --tone-ink:var(--accent-text); --tone-bg:var(--accent-soft); --tone-line:var(--accent-soft-line); --tone-wash:var(--accent-wash);
-  position:relative; padding:var(--card-pad); display:flex; flex-direction:column;
-  background:linear-gradient(180deg, var(--tone-wash) 0, var(--panel) 140px);
-  box-shadow:var(--shadow-float);
-  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  --tone-ink:var(--accent-text); --tone-bg:var(--accent-soft); --tone-line:var(--accent-soft-line);
+  display:flex; flex-direction:column; overflow:hidden;
+  border-radius:20px; box-shadow:var(--shadow-float);
 }
-.script:hover{
-  transform:translateY(-2px); border-color:var(--outline-strong);
-  box-shadow:0 1px 2px rgba(16,24,40,.04),0 16px 32px -16px rgba(16,24,40,.22);
+.script--stop{ --tone-ink:var(--tone-overdue-ink); --tone-bg:var(--tone-overdue-bg); --tone-line:var(--tone-overdue-line); }
+.script--gap{ --tone-ink:var(--dim); --tone-bg:#f2f4f7; --tone-line:var(--outline-strong); }
+.script__chat{
+  display:flex; flex-direction:column; gap:14px;
+  padding:22px 22px 24px; background:var(--panel); border-bottom:1px solid var(--outline);
 }
-.script--stop{ --tone-ink:var(--tone-overdue-ink); --tone-bg:var(--tone-overdue-bg); --tone-line:var(--tone-overdue-line); --tone-wash:#fffbfa; }
-.script--gap{ --tone-ink:var(--dim); --tone-bg:#f2f4f7; --tone-line:var(--outline); --tone-wash:var(--sunk); }
-.script__head{ display:flex; align-items:center; gap:12px; }
-.script__icon{
-  flex:none; display:grid; place-items:center; width:36px; height:36px; border-radius:10px;
+.script__k{
+  align-self:flex-start; display:inline-flex; align-items:center; gap:7px;
+  padding:3px 11px; border-radius:var(--radius-pill);
+  font-family:var(--sans); font-weight:600; font-size:13px; letter-spacing:0; line-height:1.5; text-transform:none;
   color:var(--tone-ink); background:var(--tone-bg); border:1px solid var(--tone-line);
 }
-.script__icon svg{ width:18px; height:18px; }
-.script__k{ font-family:var(--sans); font-weight:600; font-size:14px; letter-spacing:-.005em; text-transform:none; color:var(--tone-ink); }
+.script__k::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
 .script__q{
-  font-family:var(--sans); font-weight:600;
-  font-size:17px; letter-spacing:-.015em; line-height:1.4;
-  color:var(--ink); margin:20px 0 0;
-  padding:14px 16px; background:var(--panel);
-  border:1px solid var(--outline); border-radius:14px 14px 14px 4px;
-  box-shadow:var(--shadow);
+  align-self:flex-end; max-width:88%; margin:4px 0 0; padding:11px 15px;
+  font-family:var(--sans); font-weight:500; font-size:15px; letter-spacing:-.005em; line-height:1.45;
+  color:#fff; background:var(--accent); border-radius:16px 16px 4px 16px;
+  box-shadow:0 1px 2px rgba(16,24,40,.08); text-wrap:pretty;
 }
-.script__a{ font-size:15px; line-height:1.65; color:var(--dim); margin:16px 0 24px; }
-/* The foot bleeds to the card edges so its hairline spans the width. */
-.script__foot{
-  margin:auto calc(var(--card-pad) * -1) calc(var(--card-pad) * -1);
-  padding:14px var(--card-pad);
-  border-top:1px solid var(--line);
+.script__reply{ display:flex; align-items:flex-end; gap:8px; }
+.script__avatar{
+  flex:none; display:grid; place-items:center; width:30px; height:30px; border-radius:50%;
+  background:var(--panel); border:1px solid var(--outline);
 }
-/* Chips are the console's tags: sentence case pills, status by tint. */
+.script__avatar img{ width:20px; height:auto; }
 .chip{
-  display:inline-flex; align-items:center; gap:7px;
-  font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:0; text-transform:none;
-  padding:3px 12px; border-radius:var(--radius-pill); line-height:1.5;
+  padding:9px 14px; border-radius:16px 16px 16px 4px;
+  font-family:var(--sans); font-weight:500; font-size:14px; letter-spacing:0; line-height:1.4; text-transform:none;
+  color:var(--tone-ink); background:var(--panel); border:1px solid var(--tone-line);
+  box-shadow:0 1px 2px rgba(16,24,40,.05);
 }
-.chip--cite{ color:var(--accent-text); background:var(--accent-soft); border:1px solid var(--accent-soft-line); }
-.chip--stop{ color:var(--tone-overdue-ink); background:var(--tone-overdue-bg); border:1px solid var(--tone-overdue-line); }
-.chip--gap{ color:var(--dim); background:#f2f4f7; border:1px solid var(--outline); }
-@media (prefers-reduced-motion:reduce){ .script, .script:hover{ transition:none; transform:none; } }
+.chip--cite{ text-decoration:underline; text-decoration-color:var(--accent-soft-line); text-decoration-thickness:1px; text-underline-offset:4px; }
+.script__a{ margin:0; padding:20px 22px 24px; font-size:15px; line-height:1.65; color:var(--dim); text-wrap:pretty; }
 .scripts__foot{
-  margin-top:24px; font-family:var(--sans); font-size:13px;
-  letter-spacing:0; color:var(--faint);
+  margin:24px 0 0; font-family:var(--sans); font-size:13px; letter-spacing:0; color:var(--faint);
 }
 
-/* ---------- operators: the console's soft accent panel ---------- */
+/* ---------- operators: an admission ticket ---------- */
+/* A white main panel and a blue stub, joined on a perforated seam with
+   real notches cut at its ends (a mask, so the page shows through). The
+   drop shadow sits on the wrapper so it follows the notched outline. */
+#operators .shell{ filter:drop-shadow(0 1px 2px rgba(16,24,40,.06)) drop-shadow(0 18px 32px rgba(16,24,40,.12)); }
 .ops{
-  background:var(--accent-wash); color:var(--ink);
-  border:1px solid var(--accent-soft-line);
-  border-radius:20px; padding:52px clamp(26px,5vw,60px);
-  position:relative; overflow:hidden;
+  --stub:320px; --notch:15px;
+  display:grid; grid-template-columns:minmax(0,1fr) var(--stub);
+  border-radius:24px; overflow:hidden; background:var(--panel);
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at calc(100% - var(--stub)) 0, transparent 97%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at calc(100% - var(--stub)) 100%, transparent 97%, #000) bottom / 100% 51% no-repeat;
+          mask:
+    radial-gradient(circle var(--notch) at calc(100% - var(--stub)) 0, transparent 97%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--notch) at calc(100% - var(--stub)) 100%, transparent 97%, #000) bottom / 100% 51% no-repeat;
 }
 .ops__glow{ display:none; }
-.ops__inner{ position:relative; max-width:740px; }
+.ops__inner{ padding:clamp(40px,5vw,64px); }
 .ops .stencil{ font-weight:600; }
-.ops h2{ margin-top:10px; }
-.ops .copy{ color:var(--dim); margin:16px 0 0; max-width:580px; }
-.ops__list{ list-style:none; margin:30px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:14px 32px; max-width:680px; }
-.ops__list li{ display:flex; gap:12px; align-items:flex-start; font-size:15px; line-height:1.5; color:var(--dim); }
+.ops h2{ margin-top:10px; max-width:560px; text-wrap:balance; }
+.ops .copy{ color:var(--dim); margin:16px 0 0; max-width:600px; }
+.ops__list{ list-style:none; margin:32px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:18px 36px; max-width:680px; }
+.ops__list li{ display:flex; gap:12px; align-items:flex-start; font-size:15px; line-height:1.55; color:var(--dim); }
 .ops__list b{ color:var(--ink); font-weight:600; }
-.ops__list .tick{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:22px; height:22px; margin-top:0; border-radius:50%;
-  background:var(--ok-bg); color:var(--ok); font-size:12px; font-weight:700; line-height:1;
-  flex:0 0 auto;
+.ops__list .tick{ flex:0 0 auto; width:14px; color:var(--ok); font-size:15px; font-weight:700; line-height:1.55; }
+
+/* The stub: the brand blue, perforated along its left edge, a six-dot
+   mark up top (the "code"), the call to action at the foot. */
+.ops__stub{
+  display:flex; flex-direction:column; justify-content:space-between; gap:48px;
+  padding:clamp(32px,4vw,44px) clamp(28px,3.4vw,40px);
+  background:var(--accent); color:#fff;
+  border-left:2px dashed rgba(255,255,255,.45);
 }
-.ops__cta{ display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:34px; }
-.ops__fine{ font-family:var(--sans); font-size:14px; letter-spacing:0; color:var(--faint); }
+/* One 14px dot; the other five are box-shadows, so the mark is 62x38px
+   but only takes up the first dot's box in layout. */
+.ops__dots{
+  display:block; width:14px; height:14px; border-radius:50%; background:#fff;
+  box-shadow:24px 0 #fff, 48px 0 #fff, 0 24px #fff, 24px 24px rgba(255,255,255,.45), 48px 24px rgba(255,255,255,.45);
+  margin-bottom:24px;
+}
+.ops__cta{ display:flex; flex-direction:column; gap:14px; }
+.ops__cta .btn{
+  width:100%; min-height:50px; padding:13px 20px; justify-content:space-between; font-size:16px;
+  color:var(--accent-text); background:#fff; border-color:#fff;
+  box-shadow:0 1px 2px rgba(16,24,40,.12);
+}
+.ops__cta .btn:hover{ background:var(--accent-soft); border-color:var(--accent-soft); }
+.ops__cta .btn:active{ background:var(--accent-soft-line); border-color:var(--accent-soft-line); }
+.ops__fine{ font-family:var(--sans); font-size:14px; line-height:1.5; letter-spacing:0; color:rgba(255,255,255,.88); }
 
 /* ---------- founder ---------- */
-.founder{ max-width:760px; margin:0 auto; text-align:center; }
+/* Two bands: the quote alone on grey, then the story and the rule it
+   left behind as two columns on white. The quote takes the section
+   heading's size; the prose is the page's 16px copy. */
+.founder__top{ background:var(--sunk); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:88px 0 72px; }
 .founder__quote{
   font-family:var(--sans); font-weight:700;
-  font-size:clamp(24px,3vw,32px); line-height:1.3; letter-spacing:-.025em;
-  margin:18px 0 0; color:var(--ink);
+  font-size:clamp(28px,3.4vw,38px); line-height:1.18; letter-spacing:-.03em;
+  margin:14px 0 0; max-width:860px; color:var(--ink);
+  text-wrap:balance;
 }
-/* The quote is centred; the prose under it is not. */
-.founder .copy{ max-width:600px; margin:22px auto 0; text-align:left; }
+.founder__body{
+  display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:32px clamp(40px,7vw,112px);
+  padding-top:64px; padding-bottom:88px;
+}
+.founder__body .copy{ margin:0; max-width:620px; line-height:1.75; }
+.founder__body strong{ color:var(--ink); font-weight:600; }
+/* The rule, marked with a small accent square on its first line. */
+.founder__rule{ position:relative; padding-left:28px; }
+.founder__rule::before{
+  content:""; position:absolute; left:0; top:calc(.875em - 4px);
+  width:8px; height:8px; border-radius:2px; background:var(--accent);
+}
 .inlineLink{ color:var(--accent-text); font-weight:600; text-decoration:underline; text-decoration-color:rgba(44,96,196,.35); text-underline-offset:3px; }
 .inlineLink:hover{ text-decoration-color:currentColor; }
 
-/* ---------- closing: a flat tile, like the console's figures ---------- */
-.close{
-  background:var(--tile);
-  border:0; border-radius:20px;
-  padding:60px 24px; text-align:center;
+/* ---------- closing: a tile with a drawer at its foot ---------- */
+/* The grey runs the full width of the section, and the section has no
+   bottom padding, so the drawer sits flush on its foot and the section's
+   overflow clips whatever slides out. */
+.band--close{ padding-bottom:0; overflow:hidden; }
+.close{ position:relative; text-align:center; }
+.close h2{ max-width:760px; margin:0 auto; text-wrap:balance; }
+.close .lede{ max-width:560px; margin:18px auto 0; text-wrap:pretty; }
+.close__cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:32px; }
+.close__cta .btn{ min-height:50px; padding:13px 24px; font-size:16px; }
+.close__cta .btn--primary{ box-shadow:0 10px 24px -8px rgba(58,114,212,.55); }
+
+/* Nellie waits hidden behind the drawer front. Hovering the drawer
+   slides it down until only its lip shows below her, and lets her rise
+   a little, so the whole of her appears. Decorative. */
+.close__scene{
+  position:relative; width:min(700px,100%); height:280px; margin:32px auto 0;
 }
-.close__nellie{ width:88px; height:auto; margin:0 auto 20px; }
-.close h2{ max-width:700px; margin:0 auto; }
-.close .lede{ max-width:540px; margin:16px auto 0; }
-.close__cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:30px; }
+.close__nellie{
+  position:absolute; left:50%; bottom:56px; width:150px; height:auto; margin:0;
+  transform:translateX(-50%);
+  transition:transform .55s cubic-bezier(.22,1,.36,1);
+}
+.close__drawer{
+  position:absolute; left:0; right:0; top:96px; height:200px;
+  border:1px solid var(--outline); border-bottom:0; border-radius:18px 18px 0 0;
+  background:linear-gradient(180deg,#ffffff 0%,#f5f6f8 100%);
+  box-shadow:0 -10px 30px -12px rgba(16,24,40,.14), inset 0 1px 0 #fff;
+  transition:transform .55s cubic-bezier(.22,1,.36,1);
+}
+.close__handle{
+  position:absolute; left:50%; top:38px; width:148px; height:14px; transform:translateX(-50%);
+  border-radius:var(--radius-pill);
+  background:linear-gradient(180deg,#e4e7ec,#d0d5dd);
+  box-shadow:inset 0 1px 1px rgba(16,24,40,.12), 0 1px 0 #fff;
+}
+.close__scene:hover .close__drawer{ transform:translateY(156px); }
+.close__scene:hover .close__nellie{ transform:translateX(-50%) translateY(-14px); }
+@media (prefers-reduced-motion:reduce){ .close__drawer, .close__nellie{ transition:none; } }
 
 /* ---------- footer: light, on a hairline ---------- */
 .foot{ background:var(--bg); color:var(--dim); border-top:1px solid var(--line); }
@@ -641,19 +740,35 @@ strong{ color:var(--ink); font-weight:600; }
 }
 @media (max-width:940px){
   .ways{ grid-template-columns:1fr; }
-  .maint{ grid-template-columns:1fr; gap:40px; }
+  .maint__top{ grid-template-columns:1fr; align-items:start; }
+  .founder__body{ grid-template-columns:1fr; }
+  .ops{ grid-template-columns:1fr; -webkit-mask:none; mask:none; }
+  .ops__stub{ border-left:0; border-top:2px dashed rgba(255,255,255,.45); flex-direction:row; align-items:flex-end; gap:32px; }
+  .ops__dots{ margin-bottom:0; flex:none; align-self:flex-start; }
+  .ops__cta{ flex:1; max-width:360px; margin-left:auto; }
+  .task{
+    grid-template-columns:120px minmax(0,1fr) auto;
+    grid-template-areas:"bucket what when" "bucket meta when";
+    row-gap:2px;
+  }
+  .maint__steps{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:36px 32px; }
   .feats{ grid-template-columns:1fr 1fr; }
-  .scripts{ grid-template-columns:1fr; }
+  .scripts{ grid-template-columns:1fr; max-width:600px; }
   .nav__links{ display:none; }
   .foot__row{ flex-direction:column; }
 }
-/* Phones: smaller, so her outer half fits the page gutter and her inner
-   half stays clear of the values column on a 320px screen. */
+/* Phones: a little smaller; top keeps the same 6px foot overlap. */
 @media (max-width:475px){
-  .rig__nellie{ top:98px; right:-14px; width:80px; }
+  .rig__nellie{ top:-30px; width:88px; }
+}
+@media (max-width:1140px){
+  :root{ --pad:80px; }
+}
+@media (max-width:680px){
+  :root{ --pad:64px; }
 }
 @media (max-width:640px){
-  :root{ --pad:28px; }
+  :root{ --pad:32px; }
   body{ font-size:16px; }
   .brand__name{ font-size:17px; }
   /* Under 640px the nav has room for one button. Log in is the one a
@@ -666,10 +781,22 @@ strong{ color:var(--ink); font-weight:600; }
   .spec__v{ font-size:30px; }
   .feats{ grid-template-columns:1fr; }
   .ops__list{ grid-template-columns:1fr; }
-  .ops{ padding:36px 22px; }
+  .ops__inner{ padding:36px 22px; }
+  .ops__stub{ padding:28px 22px; }
+  .ops__stub{ flex-direction:column; align-items:stretch; gap:0; }
+  .ops__dots{ margin-bottom:48px; }
+  .ops__cta{ max-width:none; margin-left:0; }
   .way,.feat{ padding:22px; }
-  .script{ --card-pad:22px; }
-  .tasks__head,.bucket,.task{ padding-left:18px; padding-right:18px; }
+  .tasks__head{ padding:14px 18px; }
+  .founder__top{ padding:64px 0 52px; }
+  .founder__body{ padding-top:44px; padding-bottom:64px; }
+  .task{
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"bucket when" "what what" "meta meta";
+    row-gap:4px; padding:16px 18px;
+  }
+  .task__bucket{ font-size:13px; }
+  .maint__steps{ grid-template-columns:1fr; gap:28px; }
   .foot__cols{ gap:36px; }
 }
 @media (max-width:430px){
@@ -677,7 +804,7 @@ strong{ color:var(--ink); font-weight:600; }
   .brand{ gap:10px; }
   .brand__name{ font-size:16px; }
   .btn--login{ padding:8px 14px; font-size:14px; }
-  .hero__cta .btn{ flex:1 1 100%; }
+  .hero__cta .btn, .close__cta .btn{ flex:1 1 100%; }
   .spec__k{ font-size:14px; }
   .spec__v{ font-size:28px; }
 }
@@ -887,7 +1014,7 @@ strong{ color:var(--ink); font-weight:600; }
 </section>
 
 <!-- ===================== WHAT IT SAYS BACK ===================== -->
-<section class="band band--dark on-dark">
+<section class="band band--sunk">
   <div class="shell">
     <div class="band__head">
       <div class="stencil stencil--lead">What it says back</div>
@@ -897,33 +1024,39 @@ strong{ color:var(--ink); font-weight:600; }
 
     <div class="scripts">
       <article class="script script--answer">
-        <div class="script__head">
-          <span class="script__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5.5A1.5 1.5 0 0 1 3.5 4H9a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5h-6A1.5 1.5 0 0 1 2 16z"/><path d="M22 5.5A1.5 1.5 0 0 0 20.5 4H15a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5h6a1.5 1.5 0 0 0 1.5-1.5z"/></svg></span>
+        <div class="script__chat">
           <div class="script__k">Answers it</div>
+          <p class="script__q">“How do I change the water filter on the Bunn?”</p>
+          <div class="script__reply">
+            <span class="script__avatar" aria-hidden="true"><img src="assets/nellie.png" alt="" width="20" height="14"></span>
+            <span class="chip chip--cite">Operator manual · p. 12</span>
+          </div>
         </div>
-        <p class="script__q">“How do I change the water filter on the Bunn?”</p>
         <p class="script__a">Walks through the steps in order, in the manual's own sequence, with the interval the manufacturer specifies. The citation opens the page so the cook can check it against what's in front of them.</p>
-        <div class="script__foot"><span class="chip chip--cite">Operator manual · p. 12</span></div>
       </article>
 
       <article class="script script--stop">
-        <div class="script__head">
-          <span class="script__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 6.5v5.2c0 4.6 3.8 8.3 9 9.3 5.2-1 9-4.7 9-9.3V6.5z"/><path d="M12 8.5v4"/><path d="M12 16h.01"/></svg></span>
+        <div class="script__chat">
           <div class="script__k">Stops short</div>
+          <p class="script__q">“The rack oven won't light. Can I check the igniter?”</p>
+          <div class="script__reply">
+            <span class="script__avatar" aria-hidden="true"><img src="assets/nellie.png" alt="" width="20" height="14"></span>
+            <span class="chip chip--stop">Call a certified tech</span>
+          </div>
         </div>
-        <p class="script__q">“The rack oven won't light. Can I check the igniter?”</p>
         <p class="script__a">Gas, refrigerant and line voltage get the same treatment: the app gives you what the manual says about the symptom, then tells you plainly that this one goes to a certified technician. It doesn't walk a baker into a gas train.</p>
-        <div class="script__foot"><span class="chip chip--stop">Call a certified tech</span></div>
       </article>
 
       <article class="script script--gap">
-        <div class="script__head">
-          <span class="script__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/><path d="M9.2 9.3a1.9 1.9 0 0 1 3.6.7c0 1.2-1.8 1.6-1.8 2.6"/><path d="M11 14.6h.01"/></svg></span>
+        <div class="script__chat">
           <div class="script__k">Admits the gap</div>
+          <p class="script__q">“What descaler does the espresso machine take?”</p>
+          <div class="script__reply">
+            <span class="script__avatar" aria-hidden="true"><img src="assets/nellie.png" alt="" width="20" height="14"></span>
+            <span class="chip chip--gap">Manual not sourced yet</span>
+          </div>
         </div>
-        <p class="script__q">“What descaler does the espresso machine take?”</p>
         <p class="script__a">Some manuals only move through distributor channels. When one isn't in the library yet, the app says the manual isn't there and links the manufacturer's official resources, rather than producing something that sounds right.</p>
-        <div class="script__foot"><span class="chip chip--gap">Manual not sourced yet</span></div>
       </article>
     </div>
 
@@ -932,66 +1065,55 @@ strong{ color:var(--ink); font-weight:600; }
 </section>
 
 <!-- ===================== MAINTENANCE ===================== -->
-<section id="maintenance" class="band band--sunk">
+<section id="maintenance" class="band band--rule">
   <div class="shell">
-    <div class="band__head">
-      <div class="stencil stencil--lead">Maintenance</div>
-      <h2 class="display">The manual already told you when. It just never reminded you.</h2>
-      <p class="copy">Grease the bowl-lift every six months. Pull the water filter monthly. Check the door gasket weekly. Every manual carries its service intervals, and every kitchen loses them the day the binder goes in a drawer.</p>
-    </div>
-
-    <div class="maint">
-      <div>
-        <ol class="steps">
-          <li><strong>It reads the intervals out of each manual</strong>: the schedule is extracted from the book, and every item carries the page it was found on.</li>
-          <li><strong>You review and accept.</strong> Nothing lands on your schedule that you didn't approve, and nothing is proposed that the manual doesn't say.</li>
-          <li><strong>Tasks sort themselves</strong> into overdue, today, this week and later, and the phone reminds you when one comes due.</li>
-          <li><strong>Mark it done and it reschedules</strong> to the next interval. No spreadsheet, no clipboard, no wall calendar going soft above the sink.</li>
-        </ol>
+    <div class="maint__top">
+      <div class="band__head">
+        <div class="stencil stencil--lead">Maintenance</div>
+        <h2 class="display">The manual already told you when. It just never reminded you.</h2>
+        <p class="copy">Grease the bowl-lift every six months. Pull the water filter monthly. Check the door gasket weekly. Every manual carries its service intervals, and every kitchen loses them the day the binder goes in a drawer.</p>
       </div>
 
-      <div class="tasks">
-        <div class="tasks__head">
-          <span class="tasks__title">This week</span>
-          <span class="stencil" style="color:var(--muted);">3 due</span>
-        </div>
-
-        <div class="bucket stencil">Overdue</div>
-        <div class="task">
-          <span class="task__dot task__dot--over" aria-hidden="true"></span>
-          <span class="task__body">
-            <span class="task__what">Grease the bowl-lift slides and screw</span>
-            <span class="task__meta">Hobart HL600 · Service manual p. 24</span>
-          </span>
-          <span class="task__when task__when--over">3d late</span>
-        </div>
-
-        <div class="bucket stencil">Today</div>
-        <div class="task">
-          <span class="task__dot task__dot--now" aria-hidden="true"></span>
-          <span class="task__body">
-            <span class="task__what">Clean the condenser coils</span>
-            <span class="task__meta">True T-49F · Service manual p. 53</span>
-          </span>
-          <span class="task__when">Today</span>
-        </div>
-
-        <div class="bucket stencil">This week</div>
-        <div class="task">
-          <span class="task__dot" aria-hidden="true"></span>
-          <span class="task__body">
-            <span class="task__what">Inspect the door gasket seal</span>
-            <span class="task__meta">Revent 626U · Operator manual p. 31</span>
-          </span>
-          <span class="task__when">Thu</span>
-        </div>
+      <div class="next">
+        <div class="stencil">Not there yet</div>
+        <p>Calendar sync to Google Calendar and Outlook, and a completion log you could hand a health inspector or use for NFPA 96 hood-cleaning records, are next on the build. They aren't in the app today. Reminders right now are local to the phone, which means they fire whether or not the kitchen's Wi-Fi is up.</p>
       </div>
     </div>
 
-    <div class="next">
-      <div class="stencil">Not there yet</div>
-      <p>Calendar sync to Google Calendar and Outlook, and a completion log you could hand a health inspector or use for NFPA 96 hood-cleaning records, are next on the build. They aren't in the app today. Reminders right now are local to the phone, which means they fire whether or not the kitchen's Wi-Fi is up.</p>
+    <div class="tasks">
+      <div class="tasks__head">
+        <span class="tasks__title">This week</span>
+        <span class="stencil" style="color:var(--muted);">3 due</span>
+      </div>
+
+      <div class="task task--over">
+        <span class="task__bucket">Overdue</span>
+        <span class="task__what">Grease the bowl-lift slides and screw</span>
+        <span class="task__meta">Hobart HL600 · Service manual p. 24</span>
+        <span class="task__when task__when--over">3d late</span>
+      </div>
+
+      <div class="task task--now">
+        <span class="task__bucket">Today</span>
+        <span class="task__what">Clean the condenser coils</span>
+        <span class="task__meta">True T-49F · Service manual p. 53</span>
+        <span class="task__when">Today</span>
+      </div>
+
+      <div class="task">
+        <span class="task__bucket">This week</span>
+        <span class="task__what">Inspect the door gasket seal</span>
+        <span class="task__meta">Revent 626U · Operator manual p. 31</span>
+        <span class="task__when">Thu</span>
+      </div>
     </div>
+
+    <ol class="maint__steps">
+      <li><strong>It reads the intervals out of each manual:</strong> the schedule is extracted from the book, and every item carries the page it was found on.</li>
+      <li><strong>You review and accept.</strong> Nothing lands on your schedule that you didn't approve, and nothing is proposed that the manual doesn't say.</li>
+      <li><strong>Tasks sort themselves</strong> into overdue, today, this week and later, and the phone reminds you when one comes due.</li>
+      <li><strong>Mark it done and it reschedules</strong> to the next interval. No spreadsheet, no clipboard, no wall calendar going soft above the sink.</li>
+    </ol>
   </div>
 </section>
 
@@ -999,7 +1121,6 @@ strong{ color:var(--ink); font-weight:600; }
 <section id="operators" class="band">
   <div class="shell">
     <div class="ops">
-      <div class="ops__glow" aria-hidden="true"></div>
       <div class="ops__inner">
         <div class="stencil" style="color:var(--flame-hot);">For restaurant operators</div>
         <h2 class="display">One code. The whole crew. Every unit.</h2>
@@ -1011,7 +1132,10 @@ strong{ color:var(--ink); font-weight:600; }
           <li><span class="tick" aria-hidden="true">✓</span><span><b>Shared access code</b>: no accounts for staff to forget.</span></li>
           <li><span class="tick" aria-hidden="true">✓</span><span><b>Maintenance schedules</b> proposed from each manual and reviewed with you.</span></li>
         </ul>
+      </div>
 
+      <div class="ops__stub">
+        <span class="ops__dots" aria-hidden="true"></span>
         <div class="ops__cta">
           <a class="btn btn--onDark" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">
             Book a Demo <span aria-hidden="true">→</span>
@@ -1024,25 +1148,32 @@ strong{ color:var(--ink); font-weight:600; }
 </section>
 
 <!-- ===================== FOUNDER ===================== -->
-<section class="band band--sunk">
-  <div class="shell founder">
-    <div class="stencil stencil--lead">Why it exists</div>
-    <p class="founder__quote">“The information was never missing. It was just unreadable at the moment anyone needed it.”</p>
+<section class="founder">
+  <div class="founder__top">
+    <div class="shell">
+      <div class="stencil stencil--lead">Why it exists</div>
+      <p class="founder__quote">“The information was never missing. It was just unreadable at the moment anyone needed it.”</p>
+    </div>
+  </div>
+  <div class="shell founder__body">
     <p class="copy">Smart Kitchen Docs comes from the team behind <a class="inlineLink" href="https://www.smartevguides.com" target="_blank" rel="noreferrer">Smart EV Guides</a>, a tool built by a working firefighter so responders could get manufacturer rescue guidance without digging through a 40-page PDF on scene. A commercial kitchen has the same problem in a different building: the answer exists, in a manual, in a drawer, in a language nobody wants to read at six o'clock.</p>
-    <p class="copy">The rule carried over unchanged: <strong>source-linked, never generated</strong>. If the manual doesn't say it, the app doesn't either.</p>
+    <p class="copy founder__rule">The rule carried over unchanged: <strong>source-linked, never generated</strong>. If the manual doesn't say it, the app doesn't either.</p>
   </div>
 </section>
 
 <!-- ===================== CLOSING ===================== -->
-<section class="band" style="padding-bottom:84px;">
+<section class="band band--sunk band--close">
   <div class="shell">
     <div class="close">
-      <img class="close__nellie" src="assets/nellie.png" alt="" width="92" height="64">
       <h2 class="display">Your kitchen already has the answers. They're in a drawer.</h2>
       <p class="lede">We'll walk your kitchen, inventory the equipment off the plates, source the manuals, and hand your crew something they'll actually open.</p>
       <div class="close__cta">
         <a class="btn btn--primary" href="mailto:dylan@smartevguides.com?subject=Walkthrough%20%E2%80%94%20Smart%20Kitchen%20Docs">Book a Demo</a>
         <a class="btn btn--ghost" href="mailto:dylan@smartevguides.com?subject=Question%20%E2%80%94%20Smart%20Kitchen%20Docs">Ask a question</a>
+      </div>
+      <div class="close__scene" aria-hidden="true">
+        <img class="close__nellie" src="assets/nellie.png" alt="" width="150" height="105">
+        <div class="close__drawer"><span class="close__handle"></span></div>
       </div>
     </div>
   </div>
