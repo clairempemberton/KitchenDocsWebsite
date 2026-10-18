@@ -108,7 +108,10 @@ a{ color:inherit; }
 }
 
 .shell{ max-width:var(--shell); margin:0 auto; padding-left:var(--pad); padding-right:var(--pad); }
-section[id]{ scroll-margin-top:84px; }
+/* Anchor jumps land each section's top edge on the nav's bottom edge.
+   The nav's height changes with width (one row, two rows, links hidden),
+   so the script at the end of the page keeps --nav-h measured. */
+section[id]{ scroll-margin-top:var(--nav-h,73px); }
 
 /* ---------- type roles ---------- */
 .display{
@@ -589,6 +592,9 @@ strong{ color:var(--ink); font-weight:600; }
 /* A white main panel and a blue stub, joined on a perforated seam with
    real notches cut at its ends (a mask, so the page shows through). The
    drop shadow sits on the wrapper so it follows the notched outline. */
+/* Extra room below: the ticket's drop shadow eats into the gap before
+   the closing band. */
+#operators{ padding-bottom:128px; }
 #operators .shell{ filter:drop-shadow(0 1px 2px rgba(16,24,40,.06)) drop-shadow(0 18px 32px rgba(16,24,40,.12)); }
 .ops{
   --stub:320px; --notch:15px;
@@ -635,32 +641,6 @@ strong{ color:var(--ink); font-weight:600; }
 .ops__cta .btn:hover{ background:var(--accent-soft); border-color:var(--accent-soft); }
 .ops__cta .btn:active{ background:var(--accent-soft-line); border-color:var(--accent-soft-line); }
 .ops__fine{ font-family:var(--sans); font-size:14px; line-height:1.5; letter-spacing:0; color:rgba(255,255,255,.88); text-wrap:balance; }
-
-/* ---------- founder ---------- */
-/* Two bands: the quote alone on grey, then the story and the rule it
-   left behind as two columns on white. The quote takes the section
-   heading's size; the prose is the page's 16px copy. */
-.founder__top{ background:var(--sunk); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:88px 0 72px; }
-.founder__quote{
-  font-family:var(--sans); font-weight:700;
-  font-size:clamp(28px,3.4vw,38px); line-height:1.18; letter-spacing:-.03em;
-  margin:14px 0 0; max-width:860px; color:var(--ink);
-  text-wrap:balance;
-}
-.founder__body{
-  display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:32px clamp(40px,7vw,112px);
-  padding-top:64px; padding-bottom:88px;
-}
-.founder__body .copy{ margin:0; max-width:620px; line-height:1.75; }
-.founder__body strong{ color:var(--ink); font-weight:600; }
-/* The rule, marked with a small accent square on its first line. */
-.founder__rule{ position:relative; padding-left:28px; }
-.founder__rule::before{
-  content:""; position:absolute; left:0; top:calc(.875em - 4px);
-  width:8px; height:8px; border-radius:2px; background:var(--accent);
-}
-.inlineLink{ color:var(--accent-text); font-weight:600; text-decoration:underline; text-decoration-color:rgba(44,96,196,.35); text-underline-offset:3px; }
-.inlineLink:hover{ text-decoration-color:currentColor; }
 
 /* ---------- closing: a tile with a drawer at its foot ---------- */
 /* The grey runs the full width of the section, and the section has no
@@ -750,7 +730,6 @@ strong{ color:var(--ink); font-weight:600; }
 @media (max-width:940px){
   .ways{ grid-template-columns:1fr; }
   .maint__top{ grid-template-columns:1fr; align-items:start; }
-  .founder__body{ grid-template-columns:1fr; }
   .ops{ grid-template-columns:1fr; -webkit-mask:none; mask:none; }
   .ops__stub{ border-left:0; border-top:2px dashed rgba(255,255,255,.45); flex-direction:row; align-items:flex-end; gap:32px; }
   .ops__dots{ margin-bottom:0; flex:none; align-self:flex-start; }
@@ -779,6 +758,7 @@ strong{ color:var(--ink); font-weight:600; }
      returning customer needs; the walkthrough CTA is in the hero. */
   .btn--nav{ display:none; }
   .band{ padding-top:64px; padding-bottom:64px; }
+  #operators{ padding-bottom:96px; }
   .spec{ padding-bottom:48px; }
   .spec__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
   .spec__cell{ padding:16px 18px; }
@@ -792,8 +772,6 @@ strong{ color:var(--ink); font-weight:600; }
   .ops__cta{ max-width:none; margin-left:0; }
   .way,.feat{ padding:22px; }
   .tasks__head{ padding:14px 18px; }
-  .founder__top{ padding:64px 0 52px; }
-  .founder__body{ padding-top:44px; padding-bottom:64px; }
   .task{
     grid-template-columns:minmax(0,1fr) auto;
     grid-template-areas:"bucket when" "what what" "meta meta";
@@ -1189,20 +1167,6 @@ strong{ color:var(--ink); font-weight:600; }
   </div>
 </section>
 
-<!-- ===================== FOUNDER ===================== -->
-<section class="founder">
-  <div class="founder__top">
-    <div class="shell">
-      <div class="stencil stencil--lead">Why it exists</div>
-      <p class="founder__quote">“The information was never missing. It was just unreadable at the moment anyone needed it.”</p>
-    </div>
-  </div>
-  <div class="shell founder__body">
-    <p class="copy">Smart Kitchen Docs comes from the team behind <a class="inlineLink" href="https://www.smartevguides.com" target="_blank" rel="noreferrer">Smart EV Guides</a>, a tool built by a working firefighter so responders could get manufacturer rescue guidance without digging through a 40-page PDF on scene. A commercial kitchen has the same problem in a different building: the answer exists, in a manual, in a drawer, in a language nobody wants to read at six o'clock.</p>
-    <p class="copy founder__rule">The rule carried over unchanged: <strong>source-linked, never generated</strong>. If the manual doesn't say it, the app doesn't either.</p>
-  </div>
-</section>
-
 <!-- ===================== CLOSING ===================== -->
 <section class="band band--sunk band--close">
   <div class="shell">
@@ -1266,5 +1230,14 @@ strong{ color:var(--ink); font-weight:600; }
   </div>
 </footer>
 
+<script>
+  (function(){
+    var nav=document.querySelector('.nav'), root=document.documentElement;
+    function set(){ root.style.setProperty('--nav-h', nav.getBoundingClientRect().height+'px'); }
+    set();
+    if('ResizeObserver' in window) new ResizeObserver(set).observe(nav);
+    else addEventListener('resize', set);
+  })();
+</script>
 </body>
 </html>
